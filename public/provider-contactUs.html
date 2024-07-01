@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Slab" />
+
+    <!-- BootStrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <!-- JQUERY -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <!-- Angular Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+    <title>Contact Us</title>
+
+    <style>
+        body {
+            font-family: "Roboto Slab", sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            margin-top: 30px;
+            background-color: #ffffff;
+            padding-top: 0px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flexbox;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .nav-item {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .nav-link:hover {
+            color: #459af4;
+        }
+
+        #navA {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navB {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navA:hover {
+
+            color: #459af4;
+        }
+
+        #navB:hover {
+            color: #459af4;
+        }
+         /* The snackbar - position it at the bottom and in the middle of the screen */
+         #snackbar {
+            visibility: hidden;
+            /* Hidden by default. Visible on click */
+            min-width: 250px;
+            /* Set a default minimum width */
+            margin-left: -125px;
+            /* Divide value of min-width by 2 */
+            background-color: #333;
+            /* Black background color */
+            color: #fff;
+            /* White text color */
+            text-align: center;
+            /* Centered text */
+            border-radius: 2px;
+            /* Rounded borders */
+            padding: 16px;
+            /* Padding */
+            position: fixed;
+            /* Sit on top of the screen */
+            z-index: 1;
+            /* Add a z-index if needed */
+            left: 50%;
+            /* Center the snackbar */
+            top: 30px;
+            /* 30px from the bottom */
+        }
+
+        /* Show the snackbar when clicking on a button (class added with JavaScript) */
+        #snackbar.show {
+            visibility: visible;
+            /* Show the snackbar */
+            /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        /* Animations to fade the snackbar in and out */
+        @-webkit-keyframes fadein {
+            from {
+                top: 0;
+                opacity: 0;
+            }
+
+            to {
+                top: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                top: 0;
+                opacity: 0;
+            }
+
+            to {
+                top: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                top: 30px;
+                opacity: 1;
+            }
+
+            to {
+                top: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                top: 30px;
+                opacity: 1;
+            }
+
+            to {
+                top: 0;
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <script>//email passing
+        $(document).ready(function () {
+
+            let user = localStorage.getItem("user");
+            //alert(user);
+            $("#txtEmail").val(user);
+        })
+    </script>
+
+    <script>//fetch record
+        $(document).ready(function () {
+            // alert();
+            let obj = {
+                url: "/fetch-one-provider",
+                data: {
+                    kuchEmail: $("#txtEmail").val()
+                }
+            }
+            // console.log(kuchEmail);
+            $.ajax(obj).done(function (respJsonAry) {
+
+                $("#txtName").val(respJsonAry[0].pname);
+                $("#txtNumber").val(respJsonAry[0].cnumber);
+
+            }).fail(function (err) {
+                alert(err.message);
+            });
+
+        })
+    </script>
+
+    <script>
+         $(document).ready(function () {
+            $("#btnFB").click(function () {
+                let obj = {
+                    url: "/post-feedback",
+                    data: {
+                        email: $("#txtEmail").val(),
+                        cname: $("#txtName").val(),
+                        cnumber: $("#txtNumber").val(),
+                        feedback: $("#feedback").val(),
+                    },
+                };
+                
+                    $.ajax(obj)
+                        .done(function () {
+                            $("#btnFB").val("Feedback-Posted");
+                            //reseting the form after submission
+                            $("#feedback").val("");
+                            snackFunction();
+                        })
+                        .fail(function (err) {
+                            alert(err);
+                            console.log(err);
+                        });
+                
+               
+
+            });
+        });
+    </script>
+
+    <script>
+         function snackFunction() {
+            // Get the snackbar DIV
+            var x = document.getElementById("snackbar");
+
+            // Add the "show" class to DIV
+            x.className = "show";
+
+            // After 4 seconds, remove the show class from DIV
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }
+    </script>
+
+<link rel="icon" type="png" href="/assets/projectLogo2.png">
+</head> 
+
+<body>
+    <div id="snackbar">Feedback Sent <i class="fa-solid fa-check" style="color: green;"></i></div>
+    <nav class="navbar navbar-expand-lg py-0" style="background-color: #004aad">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="provider-dash.html">
+                <img src="/assets/Full logo.png" alt="Logo" height="50" class="d-inline-block align-text-top" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="provider-dash.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider-profile.html">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/find-work.html">Find Work</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/task-manager-provider.html">Task Manager</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider-contactUs.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container border-0" style="font-family: Roboto Slab;">
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12 mt-5">
+                        <center>
+                            <img src="assets/ContactUs.png" width="300rem" alt="">
+                        </center>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <label for="" class="form-floating">Email Id</label>
+                        <input type="email" class="form-control" readonly disabled id="txtEmail" name="txtEmail">
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-6">
+                        <label for="" class="form-floating">Name</label>
+                        <input type="text" class="form-control" id="txtName" name="txtName">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="" class="form-floating">Contact Number</label>
+                        <input type="text" class="form-control" id="txtNumber" name="txtNumber">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="exampleFormControlTextarea1" class="form-floating mt-1">FeedBacks/Complaints</label>
+                        <textarea class="form-control" id="feedback" name="feedback" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-primary" id="btnFB">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mt-5">
+              
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
