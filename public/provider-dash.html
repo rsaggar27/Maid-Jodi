@@ -24,36 +24,9 @@
     <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-
-    <script>//post-task
-        $(document).ready(function () {
-            $("#btnPostTask").click(function () {
-                let obj = {
-                    url: "/post-task",
-                    data: {
-                        email: $("#txtEmail").val(),
-                        category: $("#selCategory").val(),
-                        address: $("#txtAdd").val(),
-                        city: $("#selCity").val(),
-                        state: $("#selState").val(),
-                        upto: $("#dtUpto").val(),
-                        info: $("#otherInfo").val()
-                    }
-                }
-                $.ajax(obj).done(function () {
-                    $("#btnPostTask").val("Task-Posted");
-                    $("#btnPostTask").prop("disabled", true);
-                }).fail(function (err) {
-                    alert(err);
-                    console.log(err);
-                });
-            })
-        })
-    </script>
-
     <style>
         body {
-            font-family: 'Roboto Slab', sans-serif;
+            font-family: "Roboto Slab", sans-serif;
             background-color: #f8f9fa;
             margin: 0;
             padding: 0;
@@ -68,8 +41,8 @@
         }
 
         .card {
-            width: 20rem;
-            height: 12rem;
+            width: 18rem;
+            height: 30rem;
             margin: 2rem;
             padding: 1rem;
             border-radius: 10px;
@@ -78,6 +51,7 @@
             text-align: center;
             transition: transform 0.3s ease-in-out;
             display: flex;
+            align-self: center;
             justify-content: space-around;
         }
 
@@ -86,12 +60,12 @@
         }
 
         .card h2 {
-            color: #2a7ab0;
+            color: #0056b3;
         }
 
         .card i {
             font-size: 2em;
-            color: #2a7ab0;
+            color: #0056b3;
         }
 
         .modal-content {
@@ -99,13 +73,14 @@
         }
 
         .modal-header {
-            background-color: #007bff;
+            background-color: #004aad;
+            ;
             color: #fff;
             border-bottom: 2px solid #0056b3;
         }
 
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-family: Roboto Slab;
         }
 
@@ -118,7 +93,193 @@
             color: #fff;
             border-radius: 7px;
         }
+
+
+        .nav-item {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .nav-link:hover {
+            color: #459af4;
+        }
+
+        #navA {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navB {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navA:hover {
+
+            color: #459af4;
+        }
+
+        #navB:hover {
+            color: #459af4;
+        }
+
+        /* The snackbar - position it at the bottom and in the middle of the screen */
+        #snackbar {
+            visibility: hidden;
+            /* Hidden by default. Visible on click */
+            min-width: 250px;
+            /* Set a default minimum width */
+            margin-left: -125px;
+            /* Divide value of min-width by 2 */
+            background-color: #333;
+            /* Black background color */
+            color: #fff;
+            /* White text color */
+            text-align: center;
+            /* Centered text */
+            border-radius: 2px;
+            /* Rounded borders */
+            padding: 16px;
+            /* Padding */
+            position: fixed;
+            /* Sit on top of the screen */
+            z-index: 1;
+            /* Add a z-index if needed */
+            left: 50%;
+            /* Center the snackbar */
+            top: 30px;
+            /* 30px from the bottom */
+        }
+
+        /* Show the snackbar when clicking on a button (class added with JavaScript) */
+        #snackbar.show {
+            visibility: visible;
+            /* Show the snackbar */
+            /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        /* Animations to fade the snackbar in and out */
+        @-webkit-keyframes fadein {
+            from {
+                top: 0;
+                opacity: 0;
+            }
+
+            to {
+                top: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                top: 0;
+                opacity: 0;
+            }
+
+            to {
+                top: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                top: 30px;
+                opacity: 1;
+            }
+
+            to {
+                top: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                top: 30px;
+                opacity: 1;
+            }
+
+            to {
+                top: 0;
+                opacity: 0;
+            }
+        }
     </style>
+
+    <script>//user info and logout
+        $(document).ready(function () {
+            let user = localStorage.getItem("user");
+            $("#active").html(user);
+            $("#emailBox").val(user);
+            $("#txtEmail").val(user);
+
+            $("#btnLogout").click(function () {
+                localStorage.removeItem("user");
+                location.href = "/index.html";
+            })
+        })
+    </script>
+
+    <script>//post-task
+       //post-task
+       $(document).ready(function () {
+            $("#btnPostTask").click(function () {
+                let obj = {
+                    url: "/post-task",
+                    data: {
+                        email: $("#txtEmail").val(),
+                        category: $("#selCategory").val(),
+                        address: $("#txtAdd").val(),
+                        city: $("#selCity").val(),
+                        state: $("#selState").val(),
+                        upto: $("#dtUpto").val(),
+                        info: $("#otherInfo").val(),
+                    },
+                };
+                //date formatting for comapring ki date sahi se valid ho taaki error na aaye   
+                var dtToday=new Date();
+                // var dtToday=v.getFullYear()+"-"+(parseInt(v.getMonth())+1)+"-"+ v.getDate();
+                // console.log(dtToday)
+                var dt=new Date($("#dtUpto").val());
+                // console.log(dt);
+
+                if (Date.parse(dt) >= Date.parse(dtToday)) {
+                    $.ajax(obj)
+                        .done(function () {
+                            $("#btnPostTask").val("Task-Posted");
+                            //reseting the form after submission
+                            $("#selCategory").val("");
+                            $("#txtAdd").val("");
+                            $("#selCity").val("");
+                            $("#selState").val("");
+                            $("#dtUpto").val("");
+                            $("#otherInfo").val("");
+                            $("#radHome").prop("checked", false);
+                            $("#radOther").prop("checked", false);
+                            $('#postTask').modal('hide');
+                            snackFunction();
+                        })
+                        .fail(function (err) {
+                            alert(err);
+                            console.log(err);
+                        });
+                }
+                else {
+                    alert("Please Enter the correct Date");
+                }
+
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -141,16 +302,50 @@
             })
         })
     </script>
+    <script>//home rad fetch
+        $(document).ready(function () {
+            $("#radHome").click(function () {
+                let obj = {
+                    url: "/fetchAddProv",
+                    data: {
+                        email: $("#txtEmail").val()
+                    }
+                }
+
+                $.ajax(obj).done(function (resp) {
+                    //    alert(JSON.stringify(resp));
+                    $("#txtAdd").val(resp[0].haddress);
+                    $("#selCity").val(resp[0].city);
+                    $("#selState").val(resp[0].state);
+                }).fail(function (err) {
+                    alert(err.message);
+                });
+            })
+        })
+    </script>
+
+    <script>
+        function snackFunction() {
+            // Get the snackbar DIV
+            var x = document.getElementById("snackbar");
+
+            // Add the "show" class to DIV
+            x.className = "show";
+
+            // After 4 seconds, remove the show class from DIV
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }
+    </script>
+    <link rel="icon" type="png" href="/assets/projectLogo2.png">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div id="snackbar">Task Posted <i class="fa-solid fa-check" style="color: green;"></i></div>
+    <nav class="navbar navbar-expand-lg py-0" style="background-color: #004aad">
         <div class="container-fluid">
             <a class="navbar-brand" href="provider-dash.html">
-                <img src="/images/projectLogo.png" alt="Logo" width="30" height="30"
-                    class="d-inline-block align-text-top">
-                <span style="color:#0072a9">Maid </span><span style="color:#01a2e9">for </span><span
-                    style="color:#0072a9">Each Other</span></a>
+                <img src="/assets/Full logo.png" alt="Logo" height="50" class="d-inline-block align-text-top" />
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -159,39 +354,43 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" aria-current="page" href="provider-dash.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
+                        <a class="nav-link" href="/provider-profile.html">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" href="/find-work.html">Find Work</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="navB" href="" data-bs-toggle="modal" data-bs-target="#postTask">Post
+                            Task</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/task-manager-provider.html">Task Manager</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="navA" href="" data-bs-toggle="modal"
+                            data-bs-target="#settingsModal">Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider-contactUs.html">Contact Us</a>
                     </li>
                 </ul>
-
             </div>
         </div>
     </nav>
+    <center>
+        <div class="mt-2">
+        <span style="font-size: medium; color: #0056b3;"> Welcome to dashboard ~<span id="active"
+                style="color: #0367d1;"></span></span>
+            </div></center>
     <div class="dashboard">
         <div class="row">
             <!-- Profile Card -->
             <div class="card">
                 <a href="provider-profile.html" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-user" style="color:black"></i>
+                    <i class="fas fa-user fa-xl" style="color:black"></i>
                     <h2>Profile</h2>
                     <p style="color:black">Your profile details go here.</p>
                 </a>
@@ -199,7 +398,7 @@
             <!-- Find Work Card -->
             <div class="card">
                 <a href="find-work.html" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-briefcase" style="color:black"></i>
+                    <i class="fas fa-briefcase fa-xl" style="color:black"></i>
                     <h2>Find Work</h2>
                     <p style="color:black">Find the work here.</p>
                 </a>
@@ -210,8 +409,8 @@
             <!-- Post Requirement Card -->
             <div class="card" data-bs-toggle="modal" data-bs-target="#postTask">
                 <a href="#" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-pen-square" style="color:black"></i>
-                    <h2>Post Requirement</h2>
+                    <i class="fas fa-pen-square fa-xl" style="color:black"></i>
+                    <h2>Post Task</h2>
                     <p style="color:black">Create a new requirement here.</p>
                 </a>
             </div>
@@ -220,20 +419,20 @@
 
             <div class="card">
                 <a href="task-manager-provider.html" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-tasks" style="color:black"></i>
+                    <i class="fas fa-tasks fa-xl" style="color:black"></i>
                     <h2>Task Manager</h2>
                     <p style="color:black">Manage your posted tasks.</p>
                 </a>
             </div>
 
             <!-- Settings Card -->
-            <div class="card" data-bs-toggle="modal" data-bs-target="#settingsModal">
+            <!-- <div class="card" data-bs-toggle="modal" data-bs-target="#settingsModal">
                 <a href="#" style="text-decoration: none; color: #2a7ab0;">
                     <i class="fas fa-cogs" style="color:black"></i>
                     <h2>Settings</h2>
                     <p style="color:black">Adjust your account settings.</p>
                 </a>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -250,7 +449,7 @@
                     <form action="">
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" id="txtEmail" name="txtEmail"
-                                placeholder="name@example.com">
+                                placeholder="name@example.com" disabled>
                             <label for="txtEmail">Email address</label>
                         </div>
                         <div class="row">
@@ -284,7 +483,7 @@
                         <div class="row mt-2">
                             <div class="col-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radLoc" id="radHome" checked>
+                                    <input class="form-check-input" type="radio" name="radLoc" id="radHome">
                                     <label class="form-check-label" for="radHome">
                                         Home
                                     </label>
@@ -1047,8 +1246,7 @@
                 <div class="modal-body">
                     <!-- email -->
                     <div class="form-floating mt-2">
-                        <input type="email" class="form-control txtbox" id="emailBox" name="emailBox"
-                            placeholder="name@example.com" value="rishabhsaggar30@gmail.com">
+                        <input type="email" class="form-control txtbox" id="emailBox" name="emailBox" disabled>
                         <label for="floatingInput">Email address</label>
                     </div>
                     <!-- Password login -->
@@ -1066,6 +1264,7 @@
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: center;">
                     <button type="button" class="btn btn-primary" id="btnChanges">Save changes</button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnLogout">Logout</button>
                 </div>
             </div>
         </div>

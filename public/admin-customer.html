@@ -72,17 +72,47 @@
             color: #2a7ab0;
             /* margin-top: 1rem; */
         }
+        .nav-item {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .nav-link:hover {
+            color: #459af4;
+        }
+
+        #navA {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navB {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navA:hover {
+
+            color: #459af4;
+        }
+
+        #navB:hover {
+            color: #459af4;
+        }
 </style>
+<link rel="icon" type="png" href="/assets/projectLogo2.png">
 </head>
 
 <body ng-app="myModule" ng-controller="myController" ng-init="doFetch()">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg py-0" style="background-color: #004aad">
         <div class="container-fluid">
             <a class="navbar-brand" href="admin-dash.html">
-                <img src="/images/projectLogo.png" alt="Logo" width="30" height="30"
-                    class="d-inline-block align-text-top">
-                <span style="color:#0072a9">Maid </span><span style="color:#01a2e9">for </span><span
-                    style="color:#0072a9">Each Other</span></a>
+                <img src="/assets/Full logo.png" alt="Logo" height="50" class="d-inline-block align-text-top" />
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -91,58 +121,52 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" aria-current="page" href="admin-dash.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="/user-manager.html">User Manager</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin-provider.html">Work-Providers</a>
+                    </li>
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin-customer.html">Customers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" href="/admin-feedback.html">Feedbacks</a>
                     </li>
                 </ul>
-
             </div>
         </div>
     </nav>
     <br>
     <div class="row-mt-4">
         <center>
-            <h2>Customers Info</h2>
+            <img src="/assets/customers.png" width="200rem" alt="">
         </center>
     </div>
+    <div class="container">
     <div class="table-responsive">
     <center>
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col" style="background-color: #2a7ab0; color: white;">#</th>
-                    <th scope="col" style="background-color: #2a7ab0; color: white;">Email Id</th>
-                    <th scope="col" style="background-color: #2a7ab0; color: white;">Name</th>
-                    <th scope="col" style="background-color: #2a7ab0; color: white;">Contact Number</th>
-                    <th scope="col" style="background-color: #2a7ab0; color: white;">Home Address</th>
-                    <th scope="col" style="background-color: #2a7ab0; color: white;">City</th>
-                    <th scope="col" style="background-color: #2a7ab0; color: white;">State</th>
-                    <th scope="col" style="background-color: #2a7ab0; color: white;">Profile-Pic</th>
+                    <th scope="col" style="background-color: #004aad; color: white;">#</th>
+                    <th scope="col" style="background-color: #004aad; color: white;">Email Id</th>
+                    <th scope="col" style="background-color: #004aad; color: white;">Name</th>
+                    <th scope="col" style="background-color: #004aad; color: white;">Contact Number</th>
+                    <th scope="col" style="background-color: #004aad; color: white;">Home Address</th>
+                    <th scope="col" style="background-color: #004aad; color: white;">City</th>
+                    <th scope="col" style="background-color: #004aad; color: white;">State</th>
+                    <th scope="col" style="background-color: #004aad; color: white;">Profile-Pic</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="obj in respJsonAry">
                     <th>{{$index+1}}</th>
-                    <td>{{obj.emailId}}</td>
+                    <td>{{obj.email}}</td>
                     <td>{{obj.cname}}</td>
                     <td>{{obj.cnumber}}</td>
                     <td>{{obj.address}}</td>
@@ -154,5 +178,6 @@
         </table>
     </center>
     </div>
+</div>
 </body>
 </html>

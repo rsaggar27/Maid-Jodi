@@ -35,7 +35,14 @@
             }
         }
     </script>
+ <script>//email passing
+    $(document).ready(function () {
 
+        let user = localStorage.getItem("user");
+        //alert(user);
+        $("#txtEmail").val(user);
+    })
+</script>
     <script>//checkbox
 
         function termsCheck(chkTerms, btnSave) {
@@ -51,7 +58,6 @@
 
     <script>//fetch record
         $(document).ready(function () {
-            $("#btnSearch").click(function () {
                 let obj = {
                     url: "/fetch-one-provider",
                     data: {
@@ -61,10 +67,10 @@
 
                 $.ajax(obj).done(function (respJsonAry) {
 
-                    alert(JSON.stringify(respJsonAry));
+                    console.log(JSON.stringify(respJsonAry));
 
                     $("#txtPName").val(respJsonAry[0].pname);
-                    $("#txtNumber").val(respJsonAry[0].pnumber);
+                    $("#txtNumber").val(respJsonAry[0].cnumber);
                     $("#selGender").val(respJsonAry[0].gender);
                     $("#txtFAdd").val(respJsonAry[0].faddress);
                     $("#txtHAdd").val(respJsonAry[0].haddress);
@@ -74,20 +80,25 @@
                     $("#txtFirm").val(respJsonAry[0].firm);
                     $("#txtWeb").val(respJsonAry[0].website);
                     $("#dtSince").val(respJsonAry[0].since);
-                    $("otherInfo").val(respJsonAry[0].otherinfo);
-                    $("#prevBox").prop("src", "uploads/" + respJsonAry[0].idPic);
+                    $("#otherInfo").val(respJsonAry[0].otherinfo);
+                    $("#hdnImg").val(respJsonAry[0].ppic);
+                    $("#prevBox").prop("src", "uploads/" + respJsonAry[0].ppic);
 
                 }).fail(function (err) {
                     alert(err.message);
                 });
             })
-        })
     </script>
 
     <style>
         body {
-            background-color: #f8f9fa;
+
             justify-content: space-around;
+            font-family: "Roboto Slab", sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
 
         }
 
@@ -140,18 +151,48 @@
             border: 1px solid #ddd;
             border-radius: 2px;
         }
-    </style>
 
+        .nav-item {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .nav-link:hover {
+            color: #459af4;
+        }
+
+        #navA {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navB {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navA:hover {
+
+            color: #459af4;
+        }
+
+        #navB:hover {
+            color: #459af4;
+        }
+    </style>
+<link rel="icon" type="png" href="/assets/projectLogo2.png">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg py-0" style="background-color: #004aad">
         <div class="container-fluid">
             <a class="navbar-brand" href="provider-dash.html">
-                <img src="/images/projectLogo.png" alt="Logo" width="30" height="30"
-                    class="d-inline-block align-text-top">
-                <span style="color:#0072a9">Maid </span><span style="color:#01a2e9">for </span><span
-                    style="color:#0072a9">Each Other</span></a>
+                <img src="/assets/Full logo.png" alt="Logo" height="50" class="d-inline-block align-text-top" />
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -160,30 +201,22 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" aria-current="page" href="provider-dash.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
+                        <a class="nav-link" href="/provider-profile.html">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" href="/find-work.html">Find Work</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/task-manager-provider.html">Task Manager</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider-contactUs.html">Contact Us</a>
                     </li>
                 </ul>
-
             </div>
         </div>
     </nav>
@@ -191,32 +224,28 @@
         <div class="row">
             <div class="col-md-12">
                 <center>
-                    <h3>Profile-Page</h3>
+                    <img src="assets/profilePage.png" width="300rem" alt="">
                 </center>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-8">
         <form method="post" enctype="multipart/form-data">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label for="" class="form-floating">Email ID</label>
-                    <input type="email" class="form-control" id="txtEmail" name="txtEmail"
-                        value="rishabhsaggar30@gmail.com">
-                </div>
-                <div class="col-md-2">
-                    <p>
-                        <br>
-                        <input type="button" class="btn btn-primary" value="Search" id="btnSearch">
-                    </p>
+                    <input type="email" class="form-control" disabled id="txtEmail" name="txtEmail"
+                        value="">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4 mt-2">
                     <label for="" class="form-floating">Name</label>
-                    <input type="text" class="form-control" id="txtPName" name="txtPName" value="Rishabh Saggar">
+                    <input type="text" class="form-control" id="txtPName" name="txtPName" value="">
                 </div>
                 <div class="col-md-4 mt-2">
                     <label for="" class="form-floating">Contact Number</label>
-                    <input type="text" class="form-control" id="txtNumber" name="txtNumber" value="7719696833">
+                    <input type="text" class="form-control" id="txtNumber" name="txtNumber" value="">
                 </div>
                 <div class="col-md-4 mt-2">
                     <label for="selGender" class="form-floating">Gender</label>
@@ -257,11 +286,11 @@
                 </div>
                 <div class="col-md-4 mt-2">
                     <label for="" class="form-floating">Firm <span style="font-size: small;">(if any)</span></label>
-                    <input type="text" class="form-control" id="txtFirm" name="txtFirm" value="Rishabh Saggar">
+                    <input type="text" class="form-control" id="txtFirm" name="txtFirm" value="">
                 </div>
                 <div class="col-md-4 mt-2">
                     <label for="" class="form-floating">Website<span style="font-size: small;">(if any)</span></label>
-                    <input type="text" class="form-control" id="txtWeb" name="txtWeb" value="Rishabh Saggar">
+                    <input type="text" class="form-control" id="txtWeb" name="txtWeb" value="">
                 </div>
             </div>
             <div class="row">
@@ -269,18 +298,18 @@
                     <label for="txtAdd" class="form-floating">Firm Address<span style="font-size: small;">(if
                             any)</span></label>
                     <input type="text" class="form-control" id="txtFAdd" name="txtFAdd"
-                        value="Hno.1749,old main bazaar,Verka">
+                        value="">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 mt-2">
                     <label for="txtAdd" class="form-floating">Home Address</label>
                     <input type="text" class="form-control" id="txtHAdd" name="txtHAdd"
-                        value="Hno.1749,old main bazaar,Verka">
+                        value="">
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 mt-2">
+                <div class="col-md-6 mt-2">
                     <label for="selCity" class="form-floating">City</label>
                     <select class="form-select" id="selCity" name="selCity">
                         <option value="select" selected disabled>Select</option>
@@ -923,7 +952,7 @@
                         <option value="Zunheboto">Zunheboto</option>
                     </select>
                 </div>
-                <div class="col-md-4 mt-2">
+                <div class="col-md-6 mt-2">
                     <label for="selState" class="form-floating">State</label>
                     <select class="form-select" id="selState" name="selState">
                         <option value="Select" selected disabled>Select</option>
@@ -971,52 +1000,33 @@
                     <label for="" class="form-floating">Working Since</label>
                     <input type="date" class="form-control" id="dtSince" name="dtSince">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 mt-3">
-                    <label for="" class="form-floating">ID Proof</label>
-                    <input type="file" class="form-control" id="idPic" name="idPic" onchange="doShowPic(this,prevBox)"
-                        required>
+                <div class="col-md-6 mt-2">
+                    <label for="" class="form-floating">Profile Pic</label>
+                    <input type="file" class="form-control" id="ppic" name="ppic" onchange="doShowPic(this,prevBox)">
+                    <input type="hidden" id="hdnImg" name="hdnImg">
                 </div>
+            </div>
 
-                <div class="col-md-4">
-                    <label for="" class="form-floating"></label>
-                    <br>
-                    <img src="" id="prevBox" alt="" width=auto height="100px">
-                </div>
-            </div>
             <div class="row mt-2">
                 <div class="col-md-12">
                     <label for="exampleFormControlTextarea1" class="form-floating">Specialisation</label>
                     <textarea class="form-control" id="otherInfo" name="otherInfo" rows="3"></textarea>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="chkTerms"
-                            onclick="termsCheck(this,btnSave)">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            By ticking this box,you agree to our <a href="TermsAndCondtions.html">Terms and
-                                Condtions</a>
-                        </label>
-                    </div>
-                </div>
-            </div>
+           
 
             <div class="row">
                 <div class="col-md-3">
                     <br>
-                    <input type="submit" class="btn btn-outline-primary" value="Modify Profile"
+                    <input type="submit" class="btn btn-primary" value="Save Profile"
                         formaction="/profile-provider-update">
-                </div>
-                <div class="col-md-3">
-                    <br>
-                    <input type="submit" class="btn btn-primary" value="Save Profile" id="btnSave" disabled
-                        formaction="/profile-provider-save">
                 </div>
             </div>
         </form>
+        </div>
+        <div class="col-md-4 text-center">
+            <img src="" id="prevBox" alt="" class="w-75 mt-5" style="background-size: auto">
+        </div>
     </div>
 </body>
 

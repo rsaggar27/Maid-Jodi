@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-
     <!-- BootStrap cdn linking -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -22,42 +21,52 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Slab">
-    <!-- ==================================================================================================== -->
+    <link rel="icon" type="png" href="/assets/projectLogo2.png">
     <style>
+        /* #right-dash{
+        display: flexbox;
+        margin-top: 10rem;
+        justify-content: space-around;
+    } */
+        #left-dash {
+            display: flexbox;
+            /* margin-top: 10rem; */
+            justify-content: space-around;
+        }
+
         body {
-            background-color: #f8f9fa;
-            color: #000;
-            font-family: 'Roboto Slab', sans-serif;
+            background-color: #004AAD;
         }
 
-        .btn-new {
-            padding: 7px 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background-color: #007bff;
-            transition: 0.5s;
-            color: #ffffff;
-            margin-left: 0.7rem;
+        .lsbtn {
+            width: 8rem;
+            line-height: 2.5rem;
+            background-color: #004AAD;
+            border-color: #38B6FF;
+            color: #38B6FF;
+            margin-right: 2rem;
+        }
+        .lsbtn:hover{
+            transform: scale(1.05);
         }
 
-        .modal-header {
-            background-color: #007bff;
+        .lsbtn2 {
+            width: 8rem;
+            line-height: 2.5rem;
+            background-color: #004AAD;
             color: #fff;
-            border-bottom: 2px solid #0056b3;
+            border: 0;
+            border-radius: 5px;
+            border-color: #02316f;
+        }
+        .lsbtn2:hover{
+            background-color: #02316f; 
+            transform:scale(1.05)
+            
         }
 
-        .btn-new:hover {
-            border: 1.5px solid #007bff;
-            background-color: #ffffff;
-            color: #007bff;
-        }
-
-        .txtbox {
-            border-radius: 10px;
-            line-height: 20px;
-            border: 1px solid grey;
+        .lsbtn2:disabled {
+            background-color: #004bada6
         }
 
         .ok {
@@ -80,76 +89,130 @@
             font-size: 10px;
         }
 
-        /* ===================================== */
-
-        #carouselIndex {
-            margin-top: 10px;
-            margin-left: 5px;
-            margin-right: 5px;
-            margin-bottom: 5px;
-        }
-
-        .carousel-inner {
-            overflow: hidden;
-        }
-
-        .carousel-item {
-            height: 30rem;
-            /* Adjust the height as needed */
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-control-prev,
-        .carousel-control-next {
-            width: 5%;
-        }
-
-        /* Service Cards */
-        .service-card {
-            margin-bottom: 20px;
-            margin: auto;
-            width: 300px
-        }
-
-        .service-card img {
-            /* border-radius: 10px 10px 0 0; */
-            width: 200px;
-            margin: auto;
-        }
-
-        .service-card .card-body {
-            background-color: #f8f9fa;
-        }
-
-        .service-card h5 {
-            color: #007bff;
-        }
-
-        .service-card p {
-            color: #000;
-        }
-
-        /* Additional Styling for Page Header */
-        .page-header {
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        /* map */
-
-        #reachMap {
-            /* border-radius: 10px; */
-            border: 1px black solid;
-            margin: 5px;
+        .modal-header {
+            background-color: #004AAD;
+            color: #fff;
+            /* border-bottom: 2px solid #0056b3; */
         }
     </style>
+    <script>//sign up
+        $(document).ready(function () {
+            $("#btnSignUp").click(function () {
+                let obj = {
+                    url: "/sign_up",
+                    data: {
+                        kuchEmail: $("#txtEmail").val(),
+                        kuchPass: $("#txtPwd").val(),
+                        kuchType: $("#userType").val()
+                    }
+                }
 
-    <!-- ============================================================================================= -->
+                $.ajax(obj).done(function (resp) {
+                    if (resp == "Service-Provider") {
+                        alert("Sign up successfull. Please proceed for Login");
+                    }
+                    else if (resp == "Customer") {
+                        alert("Sign up successfull. Please proceed for Login");
+                    }
+                    else {
+                        alert(resp);
+                    }
+                })
+                    .fail(function (err) {
+                        alert("Error=" + err);
+                    });
+            })
+
+            $('#togglePwd').click(function () {
+                var pwdField = $('#txtPwd');
+                var pwdIcon = $('#togglePwd');
+                if (pwdField.attr('type') === 'password') {
+                    pwdField.attr('type', 'text');
+                    pwdIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                } else {
+                    pwdField.attr('type', 'password');
+                    pwdIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                }
+            });
+        })
+    </script>
+    <script>//login
+        $(document).ready(function () {
+            $("#btnLogin").click(function () {
+                let obj = {
+                    url: "/login",
+                    data: {
+                        loginEmail: $("#txtEmailLogin").val(),
+                        loginPwd: $("#txtPwdLogin").val()
+                    }
+                }
+
+                $.ajax(obj).done(function (resp) {
+                    console.log(resp);
+                    if (resp == "Service-Provider") {
+
+                        localStorage.setItem("user", $("#txtEmailLogin").val());
+                        // let user1=localStorage.getItem("user");
+                        // alert(user1);
+                        window.location = '/provider-dash.html';
+                    }
+                    else if (resp == "Customer") {
+
+                        localStorage.setItem("user", $("#txtEmailLogin").val());
+                        //  let user1=localStorage.getItem("user");
+                        // alert(user1);
+                        window.location = '/customer-dash2.html';
+                    }
+                    else if(resp=="Admin"){
+                        window.location='/admin-dash.html';
+                    }
+                    else 
+                        alert(resp);
+
+                }).fail(function (err) {
+                    alert(err);
+                });
+            })
+
+            $('#togglePwd2').click(function () {
+                var pwdField = $('#txtPwdLogin');
+                var pwdIcon = $('#togglePwd2');
+                if (pwdField.attr('type') === 'password') {
+                    pwdField.attr('type', 'text');
+                    pwdIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                } else {
+                    pwdField.attr('type', 'password');
+                    pwdIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                }
+            })
+        })
+    </script>
+    <script> //forget pwd
+        $(document).ready(function () {
+            $("#forgetPassword0").click(function () {
+                let email = $("#txtEmailLogin").val();
+                // alert(email);
+                $("#txtEmailForget").val(email);
+            })
+
+            $("#forgetPassword").click(function () {
+
+                let obj = {
+                    url: "/forgetPassword",
+                    data: {
+                        loginEmail: $("#txtEmailForget").val(),
+                    }
+                }
+
+                $.ajax(obj).done(function (req, resp) {
+                    $("#forgetSpan").html("Password Sent to your Email Id!")
+                    $("#forgetPassword").attr("disabled", true);
+                }).fail(function (err) {
+                    alert(err);
+                });
+            })
+        })
+    </script>
     <script> //validations
         $(document).ready(function () {
             $("#txtEmail").keyup(function () {
@@ -227,431 +290,205 @@
                 if ($("#errEmail").html() == "Email-Id Available" && $("#hdnPwd").val() == "Pass-Ok" && $("#userType").val() != null) {
                     $("#btnSignUp").attr("disabled", false);
                 }
+                else {
+                    $("#btnSignUp").attr("disabled", true);
+                }
             })
 
 
 
         })
     </script>
-    <script>//sign up
-        $(document).ready(function () {
-            $("#btnSignUp").click(function () {
-                let obj = {
-                    url: "/sign_up",
-                    data: {
-                        kuchEmail: $("#txtEmail").val(),
-                        kuchPass: $("#txtPwd").val(),
-                        kuchType: $("#userType").val()
-                    }
-                }
 
-                $.ajax(obj).done(function (resp) {
-                    if (resp == "Service-Provider") {
-                        window.location = '/provider-dash.html';
-                    }
-                    else if (resp == "Customer") {
-                        window.location = '/customer-dash2.html';
-                    }
-                    else {
-                        alert(resp);
-                    }
-                })
-                    .fail(function (err) {
-                        alert("Error=" + err);
-                    });
-            })
-
-            $('#togglePwd').click(function () {
-                var pwdField = $('#txtPwd');
-                var pwdIcon = $('#togglePwd');
-                if (pwdField.attr('type') === 'password') {
-                    pwdField.attr('type', 'text');
-                    pwdIcon.removeClass('fa-eye-slash').addClass('fa-eye');
-                } else {
-                    pwdField.attr('type', 'password');
-                    pwdIcon.removeClass('fa-eye').addClass('fa-eye-slash');
-                }
-            });
-        })
-    </script>
-    <script>//login
-        $(document).ready(function () {
-            $("#btnLogin").click(function () {
-                let obj = {
-                    url: "/login",
-                    data: {
-                        loginEmail: $("#txtEmailLogin").val(),
-                        loginPwd: $("#txtPwdLogin").val()
-                    }
-                }
-
-                $.ajax(obj).done(function (resp) {
-                    console.log(resp);
-                    if (resp == "Service-Provider") {
-
-                        localStorage.setItem("user",$("#txtEmailLogin").val());
-                        // let user1=localStorage.getItem("user");
-                        // alert(user1);
-                        window.location = '/provider-dash.html';
-                    }
-                    else if (resp == "Customer") {
-
-                        localStorage.setItem("user", $("#txtEmailLogin").val());
-                        //  let user1=localStorage.getItem("user");
-                        // alert(user1);
-                        window.location = '/customer-dash2.html';
-                    }
-                    else
-                        alert(resp);
-
-                }).fail(function (err) {
-                    alert(err);
-                });
-            })
-
-            $('#togglePwd2').click(function () {
-                var pwdField = $('#txtPwdLogin');
-                var pwdIcon = $('#togglePwd2');
-                if (pwdField.attr('type') === 'password') {
-                    pwdField.attr('type', 'text');
-                    pwdIcon.removeClass('fa-eye-slash').addClass('fa-eye');
-                } else {
-                    pwdField.attr('type', 'password');
-                    pwdIcon.removeClass('fa-eye').addClass('fa-eye-slash');
-                }
-            })
-        })
-    </script>
-    <script> //forget pwd
-        $(document).ready(function () {
-            $("#forgetPassword0").click(function () {
-                let email = $("#txtEmailLogin").val();
-                // alert(email);
-                $("#txtEmailForget").val(email);
-            })
-
-            $("#forgetPassword").click(function () {
-
-                let obj = {
-                    url: "/forgetPassword",
-                    data: {
-                        loginEmail: $("#txtEmailForget").val(),
-                    }
-                }
-
-                $.ajax(obj).done(function (req, resp) {
-                    $("#forgetSpan").html("Password Sent to your Email Id!")
-                    $("#forgetPassword").attr("disabled", true);
-                }).fail(function (err) {
-                    alert(err);
-                });
-            })
-        })
-    </script>
 
 </head>
 
 <body>
-    <!-- NavBar -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="display: flex; align-items:end;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="/images/projectLogo.png" alt="Logo" width="30" height="30"
-                    class="d-inline-block align-text-top">
-                <span style="color:#0072a9">Maid </span> <span style="color:#01a2e9">for </span><span
-                    style="color:#0072a9">Each Other</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div style="display: flex; ">
-                    <!-- SignUp -->
-                    <button type="button" class="btn-new " data-bs-toggle="modal" data-bs-target="#signupModal"
-                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: 1rem; --bs-btn-font-size: 1rem; --bs-btn-margin:1rem"
-                        ;>
-                        Sign Up
-                    </button>
-                    <!-- SignUp Modal -->
-                    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="signupModalLabel">Sign Up</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <!-- Email Id -->
-                                    <div class="form-floating">
-
-                                        <input type="text" class="form-control txtbox" id="txtEmail"
-                                            value="rishabhsaggar30@gmail.com" placeholder="name@example.com">
-                                        <label for="floatingInput">Email address</label>
-                                        <span id="errEmail"></span>
-                                    </div><br>
-
-                                    <!-- PassWord -->
-                                    <div class="form-floating" style="display: flex; align-items:center">
-
-
-                                        <input type="password" class="form-control txtbox" id="txtPwd"
-                                            placeholder="Password" value="12345678">
-                                        <div style="float: left;">
-                                            <i class="fa fa-eye-slash" id="togglePwd"
-                                                style="margin-left: 10px; margin-right: 5px;"></i>
-                                        </div>
-                                        <label for="floatingPassword">Password
-                                        </label>
-
-                                        <input type="hidden" id="hdnPwd" value="123">
-                                    </div><br>
-
-                                    <!-- UserType -->
-                                    <div class="form-floating">
-                                        <select class="form-select txtbox" id="userType"
-                                            aria-label="Floating label select example" required>
-                                            <option selected disabled> Select</option>
-                                            <option value="Customer">Customer</option>
-                                            <option value="Service-Provider">Service-Provider</option>
-                                        </select>
-                                        <label for="floatingSelect">User-Type</label>
-                                    </div>
-                                </div>
-                                <div class="modal-footer"
-                                    style="display:flex; justify-content: center; flex-direction: column;">
-                                    <!-- SignUp Btn -->
-                                    <p>
-                                        <button type="button" class="btn btn-primary" id="btnSignUp"
-                                            disabled>Signup</button>
-                                    </p>
-                                </div>
+    <div class="container" style="padding:0; margin: 0; border:0">
+        <div class="row align-items-center " style="min-height: 100vh;">
+            <div class="col-md-8">
+                <div id="left-dash" class="ms-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="ms-5">
+                                <img src="/assets/Full logo.png" style="width:10rem" alt="">
                             </div>
-
+                        </div>
+                        <div class="col-md-12">
+                            <div class="ms-5">
+                                <img src="/assets/maid.png" style="width:20rem" alt="">
+                                <img src="/assets/jodi.png" style="width:20rem" alt="">
+                            </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="ms-5 mb-4 mt-2">
+                                <img src="assets/workfor.png" style="width:20rem"  alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="ms-5">
 
-
-
-                    <!-- Login -->
-
-                    <button type="button" class="btn-new" data-bs-toggle="modal" data-bs-target="#loginModal"
-                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: 1rem; --bs-btn-font-size: 1rem; ">
-                        Login
-                    </button>
-                    <!-- Login Modal -->
-                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="modal-body">
-                                        <!-- Email Login -->
-                                        <div class="form-floating mb-3">
-                                            <input type="email" class="form-control txtbox" id="txtEmailLogin"
-                                                placeholder="name@example.com" value="rishabhsaggar30@gmail.com">
-                                            <label for="floatingInput">Email address</label>
+                            <button type="button" class="lsbtn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                LOGIN
+                            </button>
+                            <!-- Login Modal -->
+                            <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
-                                        <!-- Password login -->
-                                        <div class="form-floating" style="display: flex; align-items:center">
-                                            <input type="password" class="form-control txtbox" id="txtPwdLogin"
-                                                value="myAdmin@123" placeholder="Password">
-                                            <div style="float: left;">
-                                                <i class="fa fa-eye-slash" id="togglePwd2"
-                                                    style="margin-left: 10px;"></i>
+                                        <div class="modal-body">
+                                            <div class="modal-body">
+                                                <!-- Email Login -->
+                                                <div class="form-floating mb-3">
+                                                    <input type="email" class="form-control txtbox" id="txtEmailLogin"
+                                                        placeholder="name@example.com"
+                                                        value="">
+                                                    <label for="floatingInput">Email address</label>
+                                                </div>
+                                                <!-- Password login -->
+                                                <div class="form-floating" style="display: flex; align-items:center">
+                                                    <input type="password" class="form-control txtbox" id="txtPwdLogin"
+                                                        value="" placeholder="Password">
+                                                    <div style="float: left;">
+                                                        <i class="fa fa-eye-slash" id="togglePwd2"
+                                                            style="margin-left: 10px;"></i>
+                                                    </div>
+                                                    <label for="floatingPassword">Password</label>
+                                                </div>
                                             </div>
-                                            <label for="floatingPassword">Password</label>
+                                        </div>
+                                        <div class="modal-footer"
+                                            style="display:flex; justify-content: center; flex-direction: column;">
+                                            <p>
+                                                <a href="" id="forgetPassword0" data-bs-toggle="modal"
+                                                    data-bs-target="#forgetModal">Forget Password?</a>
+                                            </p>
+                                            <button type="button" class="lsbtn2" id="btnLogin">Login</button>
+
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer"
-                                    style="display:flex; justify-content: center; flex-direction: column;">
-                                    <p>
-                                        <a href="" id="forgetPassword0" data-bs-toggle="modal"
-                                            data-bs-target="#forgetModal">Forget Password?</a>
-                                    </p>
-                                    <button type="button" class="btn btn-primary" id="btnLogin">Login</button>
-
-                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- forget password modal -->
-                    <div class="modal fade" id="forgetModal" tabindex="-1" aria-labelledby="forgetModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="forgetModalLabel">Forget Password</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-floating mb-3">
-                                        <input type="email" class="form-control txtbox" id="txtEmailForget"
-                                            placeholder="name@example.com" value="">
-                                        <label for="floatingInput">Email address</label>
+                            <!-- forget password modal -->
+                            <div class="modal fade" id="forgetModal" tabindex="-1" aria-labelledby="forgetModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="forgetModalLabel">Forget Password</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control txtbox" id="txtEmailForget"
+                                                    placeholder="name@example.com" value="">
+                                                <label for="floatingInput">Email address</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <p>
+                                                <span id="forgetSpan" style="font-size: small; color: #007bff;"></span>
+                                            </p>
+                                            <p>
+                                                <button type="button" class="btn btn-primary" id="forgetPassword">Get
+                                                    Password</button>
+                                            </p>
+
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <p>
-                                        <span id="forgetSpan" style="font-size: small; color: #007bff;"></span>
-                                    </p>
-                                    <p>
-                                        <button type="button" class="btn btn-primary" id="forgetPassword">Get
-                                            Password</button>
-                                    </p>
+                            </div>
+
+                            
+                            <button type="button" class="lsbtn" data-bs-toggle="modal" data-bs-target="#signupModal">
+                                SIGN UP
+                            </button>
+                            <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="signupModalLabel">Sign Up</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <!-- Email Id -->
+                                            <div class="form-floating">
+
+                                                <input type="text" class="form-control txtbox" id="txtEmail"
+                                                     placeholder="name@example.com">
+                                                <label for="floatingInput">Email address</label>
+                                                <span id="errEmail"></span>
+                                            </div><br>
+
+                                            <!-- PassWord -->
+                                            <div class="form-floating" style="display: flex; align-items:center">
+
+
+                                                <input type="password" class="form-control txtbox" id="txtPwd"
+                                                    placeholder="Password" value="">
+                                                <div style="float: left;">
+                                                    <i class="fa fa-eye-slash" id="togglePwd"
+                                                        style="margin-left: 10px; margin-right: 5px;"></i>
+                                                </div>
+                                                <label for="floatingPassword">Password
+                                                </label>
+
+                                                <input type="hidden" id="hdnPwd" value="123">
+                                            </div><br>
+
+                                            <!-- UserType -->
+                                            <div class="form-floating">
+                                                <select class="form-select txtbox" id="userType"
+                                                    aria-label="Floating label select example" required>
+                                                    <option selected disabled> Select</option>
+                                                    <option value="Customer">Customer</option>
+                                                    <option value="Service-Provider">Service-Provider</option>
+                                                </select>
+                                                <label for="floatingSelect">User-Type</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer"
+                                            style="display:flex; justify-content: center; flex-direction: column;">
+                                            <!-- SignUp modal Btn -->
+                                            <p>
+                                                <button type="button" class="lsbtn2" id="btnSignUp"
+                                                    disabled>Signup</button>
+                                            </p>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
-
-
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="my-5 py-5 me-5">
+                    <img style="width: 30rem;" src="/assets/right side dash.png" alt="">
                 </div>
             </div>
         </div>
-    </nav>
-
-    <div id="carouselIndex" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="images/c1.jpg" alt="Slide 1">
-            </div>
-            <div class="carousel-item active">
-                <img src="images/c2.jpg" alt="Slide 1">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndex" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselIndex" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-
-    <div class="page-header">
-        <h3>Our Services</h3>
-    </div>
-
-    <div class="row justify-content-center">
-        <div class="col-md-3">
-            <div class="card service-card">
-                <img src="images/projectLogo.png" class="card-img-top" alt="House Worker">
-                <div class="card-body">
-                    <h5 class="card-title">House Worker</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card service-card">
-                <img src="images/projectLogo.png" class="card-img-top" alt="House Worker">
-                <div class="card-body">
-                    <h5 class="card-title">House Worker</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card service-card">
-                <img src="images/projectLogo.png" class="card-img-top" alt="House Worker">
-                <div class="card-body">
-                    <h5 class="card-title">House Worker</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card service-card">
-                <img src="images/projectLogo.png" class="card-img-top" alt="House Worker">
-                <div class="card-body">
-                    <h5 class="card-title">House Worker</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="page-header">
-        <h3>Our Team</h3>
-    </div>
-
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card team-card" style="display: flexbox; flex-direction: row; height: 300px;">
-                <div style="display: flexbox; margin: auto;">
-                    <img src="images/projectLogo.png" style="width: 200px; margin-left:5px;" class="card-img-top"
-                        alt="House Worker">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Developed By</h5>
-                    <p class="card-text">
-                    <p>
-                    <h5>Name:</h5> Rishabh Saggar
-                    </p>
-                    <p>
-                    <h5>College:</h5> Punjab Engineering College(Deemed to be University),Chandigarh
-                    </p>
-                    <p>
-                    <h5>Branch:</h5> ECE
-                    </p>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-5">
-            <div class="card team-card" style="display: flexbox; flex-direction: row; height: 300px;">
-                <div style="display: flexbox; margin: auto;">
-                    <img src="images/projectLogo.png" class="card-img-top" style="width: 200px; margin-left:5px;"
-                        alt="House Worker">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Under the Guidance of</h5>
-                    <p class="card-text">
-                    <h5>Name:</h5> Mr. Rajesh Bansal
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="page-header">
-        <h3>Reach us</h3>
-    </div>
-
-    <div class="row justify-content-center" id="reachMap" ">
         
-            <iframe src="
-        https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3428.345102894798!2d76.78419437558165!3d30.764892274568787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ff282845c404b%3A0xc0844bf7cbdcc6e9!2sPunjab%20Engineering%20College%20(PEC)!5e0!3m2!1sen!2sin!4v1709930737453!5m2!1sen!2sin"
-        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-    </div>
-
-    <div class="page-header">
-        All rights are reserved <i class="fas fa-copyright"></i>
+        <!-- <div class="row">
+            <img src="/assets/ourTeam.png" width="200rem" alt="">
+        </div> -->
     </div>
 </body>
 

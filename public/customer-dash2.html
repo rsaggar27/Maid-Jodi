@@ -2,17 +2,17 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Dashboard</title>
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Slab">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Slab" />
 
     <!-- BootStrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
@@ -25,49 +25,13 @@
     <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            let user = localStorage.getItem("user");
-            $("#active").html(user);
-            $("#emailBox").val(user);
-            $("#txtEmail").val(user);
-
-            $("#btnLogout").click(function () {
-                localStorage.removeItem("user");
-                location.href = "/index.html";
-            })
-        })
-    </script>
-
-    <script>//post-task
-        $(document).ready(function () {
-            $("#btnPostTask").click(function () {
-                let obj = {
-                    url: "/post-task",
-                    data: {
-                        email: $("#txtEmail").val(),
-                        category: $("#selCategory").val(),
-                        address: $("#txtAdd").val(),
-                        city: $("#selCity").val(),
-                        state: $("#selState").val(),
-                        upto: $("#dtUpto").val(),
-                        info: $("#otherInfo").val()
-                    }
-                }
-                $.ajax(obj).done(function () {
-                    $("#btnPostTask").val("Task-Posted");
-                    $("#btnPostTask").prop("disabled", true);
-                }).fail(function (err) {
-                    alert(err);
-                    console.log(err);
-                });
-            })
-        })
-    </script>
+    <!-- Angular Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <link rel="icon" type="png" href="/assets/projectLogo2.png">
 
     <style>
         body {
-            font-family: 'Roboto Slab', sans-serif;
+            font-family: "Roboto Slab", sans-serif;
             background-color: #f8f9fa;
             margin: 0;
             padding: 0;
@@ -82,8 +46,8 @@
         }
 
         .card {
-            width: 20rem;
-            height: 12rem;
+            width: 18rem;
+            height: 30rem;
             margin: 2rem;
             padding: 1rem;
             border-radius: 10px;
@@ -92,6 +56,7 @@
             text-align: center;
             transition: transform 0.3s ease-in-out;
             display: flex;
+            align-self: center;
             justify-content: space-around;
         }
 
@@ -100,12 +65,12 @@
         }
 
         .card h2 {
-            color: #2a7ab0;
+            color: #0056b3;
         }
 
         .card i {
             font-size: 2em;
-            color: #2a7ab0;
+            color:  #0056b3;
         }
 
         .modal-content {
@@ -113,13 +78,13 @@
         }
 
         .modal-header {
-            background-color: #007bff;
+            background-color: #004aad;
             color: #fff;
             border-bottom: 2px solid #0056b3;
         }
 
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-family: Roboto Slab;
         }
 
@@ -128,13 +93,199 @@
         }
 
         #btnPostTask {
-
             color: #fff;
             border-radius: 7px;
         }
+
+        .nav-item {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .nav-link:hover {
+            color: #459af4;
+        }
+
+        #navA {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navB {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navA:hover {
+
+            color: #459af4;
+        }
+
+        #navB:hover {
+            color: #459af4;
+        }
+
+        /* The snackbar - position it at the bottom and in the middle of the screen */
+        #snackbar {
+            visibility: hidden;
+            /* Hidden by default. Visible on click */
+            min-width: 250px;
+            /* Set a default minimum width */
+            margin-left: -125px;
+            /* Divide value of min-width by 2 */
+            background-color: #333;
+            /* Black background color */
+            color: #fff;
+            /* White text color */
+            text-align: center;
+            /* Centered text */
+            border-radius: 2px;
+            /* Rounded borders */
+            padding: 16px;
+            /* Padding */
+            position: fixed;
+            /* Sit on top of the screen */
+            z-index: 1;
+            /* Add a z-index if needed */
+            left: 50%;
+            /* Center the snackbar */
+            top: 30px;
+            /* 30px from the bottom */
+        }
+
+        /* Show the snackbar when clicking on a button (class added with JavaScript) */
+        #snackbar.show {
+            visibility: visible;
+            /* Show the snackbar */
+            /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        /* Animations to fade the snackbar in and out */
+        @-webkit-keyframes fadein {
+            from {
+                top: 0;
+                opacity: 0;
+            }
+
+            to {
+                top: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                top: 0;
+                opacity: 0;
+            }
+
+            to {
+                top: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                top: 30px;
+                opacity: 1;
+            }
+
+            to {
+                top: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                top: 30px;
+                opacity: 1;
+            }
+
+            to {
+                top: 0;
+                opacity: 0;
+            }
+        }
     </style>
 
-    <script> //settings
+    <script>
+        //user info and logout
+        $(document).ready(function () {
+            let user = localStorage.getItem("user");
+            $("#active").html(user);
+            $("#emailBox").val(user);
+            $("#txtEmail").val(user);
+
+            $("#btnLogout").click(function () {
+                localStorage.removeItem("user");
+                location.href = "/index.html";
+            });
+        });
+    </script>
+
+    <script>
+        //post-task
+        $(document).ready(function () {
+            $("#btnPostTask").click(function () {
+                let obj = {
+                    url: "/post-task",
+                    data: {
+                        email: $("#txtEmail").val(),
+                        category: $("#selCategory").val(),
+                        address: $("#txtAdd").val(),
+                        city: $("#selCity").val(),
+                        state: $("#selState").val(),
+                        upto: $("#dtUpto").val(),
+                        info: $("#otherInfo").val(),
+                    },
+                };
+                //date formatting for comapring ki date sahi se valid ho taaki error na aaye   
+                var dtToday=new Date();
+                // var dtToday=v.getFullYear()+"-"+(parseInt(v.getMonth())+1)+"-"+ v.getDate();
+                // console.log(dtToday)
+                var dt=new Date($("#dtUpto").val());
+                // console.log(dt);
+
+                if (Date.parse(dt) >= Date.parse(dtToday)) {
+                    $.ajax(obj)
+                        .done(function () {
+                            $("#btnPostTask").val("Task-Posted");
+                            //reseting the form after submission
+                            $("#selCategory").val("");
+                            $("#txtAdd").val("");
+                            $("#selCity").val("");
+                            $("#selState").val("");
+                            $("#dtUpto").val("");
+                            $("#otherInfo").val("");
+                            $("#radHome").prop("checked", false);
+                            $("#radOther").prop("checked", false);
+                            $('#postTask').modal('hide');
+                            snackFunction();
+                        })
+                        .fail(function (err) {
+                            alert(err);
+                            console.log(err);
+                        });
+                }
+                else {
+                    alert("Please Enter the correct Date");
+                }
+
+            });
+        });
+    </script>
+
+    <script>
+        //settings
         $(document).ready(function () {
             $("#btnChanges").click(function () {
                 //console.log($("#emailBox").val());
@@ -143,50 +294,80 @@
                     data: {
                         bssEmail: $("#emailBox").val(),
                         kuchOldPwd: $("#txtOldPwd").val(),
-                        kuchNewPwd: $("#txtNewPwd").val()
-                    }
-                }
-                $.ajax(obj).done(function (resp) {
-                    alert(resp);
-                }).fail(function (err) {
-                    console.log(err);
-                    alert(err);
-                });
-            })
-        })
+                        kuchNewPwd: $("#txtNewPwd").val(),
+                    },
+                };
+                $.ajax(obj)
+                    .done(function (resp) {
+                        alert(resp);
+                        if (resp == "PassWord updated Successfully") {
+                            localStorage.removeItem("user");
+                            location.href = "/index.html";
+                            alert("Please Login Again");
+                        }
+                    })
+                    .fail(function (err) {
+                        console.log(err);
+                        alert(err);
+                    });
+            });
+        });
     </script>
 
     <script>
+        //home rad fetch
         $(document).ready(function () {
             $("#radHome").click(function () {
-                let obj={
-                    url:"/fetchAddCust",
-                    data:{
-                        email: $("#txtEmail").val()
-                    }
-                }
+                let obj = {
+                    url: "/fetchAddCust",
+                    data: {
+                        email: $("#txtEmail").val(),
+                    },
+                };
 
-                $.ajax(obj).done(function(resp){
-                //    alert(JSON.stringify(resp));
-                   $("#txtAdd").val(resp[0].address);
-                   $("#selCity").val(resp[0].city);
-                   $("#selState").val(resp[0].state);
-                }).fail(function(err){
-                    alert(err.message);
-                });
-            })
-        })
+                $.ajax(obj)
+                    .done(function (resp) {
+                        //    alert(JSON.stringify(resp));
+                        $("#txtAdd").val(resp[0].address);
+                        $("#selCity").val(resp[0].city);
+                        $("#selState").val(resp[0].state);
+                    })
+                    .fail(function (err) {
+                        alert(err.message);
+                    });
+            });
+        });
     </script>
+    <script>
+        function snackFunction() {
+            // Get the snackbar DIV
+            var x = document.getElementById("snackbar");
+
+            // Add the "show" class to DIV
+            x.className = "show";
+
+            // After 4 seconds, remove the show class from DIV
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }
+    </script>
+    <!-- <script>
+    function dateFn(){
+    var v=new Date();
+    var dt=v.getFullYear()+"-"+v.getMonth()+1+"-"+v.getDate();
+    console.log(dt);
+    document.getElementById('dtUpto').min=dt;
+    }
+</script> -->
+
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div id="snackbar">Task Posted <i class="fa-solid fa-check" style="color: green;"></i></div>
+    <nav class="navbar navbar-expand-lg py-0" style="background-color: #004aad">
         <div class="container-fluid">
             <a class="navbar-brand" href="customer-dash2.html">
-                <img src="/images/projectLogo.png" alt="Logo" width="30" height="30"
-                    class="d-inline-block align-text-top">
-                <span style="color:#0072a9">Maid </span><span style="color:#01a2e9">for </span><span
-                    style="color:#0072a9">Each Other</span></a>
+                <img src="/assets/Full logo.png" alt="Logo" height="50" class="d-inline-block align-text-top" />
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -195,53 +376,52 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" aria-current="page" href="customer-dash2.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
+                        <a class="nav-link" href="/customer-profile.html">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" id="navB" href="" data-bs-toggle="modal" data-bs-target="#postTask">Post
+                            Task</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/task-manager-customer.html">Task Manager</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="navA" href="" data-bs-toggle="modal"
+                            data-bs-target="#settingsModal">Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/customer-contactUs.html">Contact Us</a>
                     </li>
                 </ul>
-
             </div>
         </div>
     </nav>
-    <center><span style="font-size: medium; color: #0056b3;"> Welcome to dashboard Mr. <span id="active"
-                style="color: #0367d1;"></span></span></center>
+    <center>
+        <div class="mt-2">
+            <span style="font-size: medium; color: #0056b3;">
+                Welcome to dashboard ~ <span id="active" style="color: #0367d1"></span></span>
+        </div>
+    </center>
     <div class="dashboard">
-
         <div class="row">
             <!-- Profile Card -->
-            <div class="card">
-                <a href="customer-profile.html" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-user" style="color:black"></i>
+            <div class="card" href="customer-profile.html">
+                <a href="customer-profile.html" style="text-decoration: none; color: #2a7ab0">
+                    <i class="fas fa-user fa-xl" style="color: black"></i>
                     <h2>Profile</h2>
-                    <p style="color:black">Your profile details go here.</p>
+                    <p style="color: black">Your profile details go here.</p>
                 </a>
             </div>
 
             <!-- Post Requirement Card -->
             <div class="card" data-bs-toggle="modal" data-bs-target="#postTask">
-                <a href="#" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-pen-square" style="color:black"></i>
-                    <h2>Post Requirement</h2>
-                    <p style="color:black">Create a new requirement here.</p>
+                <a href="#" style="text-decoration: none; color: #2a7ab0">
+                    <i class="fas fa-pen-square fa-xl" style="color: black"></i>
+                    <h2>Post Task</h2>
+                    <p style="color: black">Create a new requirement here .</p>
                 </a>
             </div>
         </div>
@@ -250,23 +430,23 @@
             <!-- Requirement Manager Card -->
 
             <div class="card">
-                <a href="task-manager-customer.html" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-tasks" style="color:black"></i>
+                <a href="task-manager-customer.html" style="text-decoration: none; color: #2a7ab0">
+                    <i class="fas fa-tasks fa-xl" style="color: black"></i>
                     <h2>Task Manager</h2>
-                    <p style="color:black">Manage your posted tasks.</p>
+                    <p style="color: black">Manage your posted tasks.</p>
                 </a>
             </div>
+
 
             <!-- Settings Card -->
             <div class="card" data-bs-toggle="modal" data-bs-target="#settingsModal">
-                <a href="#" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-cogs" style="color: black;"></i>
+                <a href="#" style="text-decoration: none; color: #2a7ab0">
+                    <i class="fas fa-cogs fa-xl" style="color: black"></i>
                     <h2>Settings</h2>
-                    <p>Adjust your account settings.</p>
+                    <p style="color: black;">Adjust your account settings.</p>
                 </a>
             </div>
         </div>
-
     </div>
 
     <!-- post TaskModal -->
@@ -278,17 +458,17 @@
                     <h1 class="modal-title fs-5">Post Task</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="font-family: Roboto Slab;">
+                <div class="modal-body" style="font-family: Roboto Slab">
                     <form action="">
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" id="txtEmail" name="txtEmail"
-                                placeholder="name@example.com" disabled>
+                                placeholder="name@example.com" required disabled />
                             <label for="txtEmail">Email address</label>
                         </div>
                         <div class="row">
                             <div class="form-floating">
-                                <select class="form-select" id="selCategory" name="selCategory">
-                                    <option selected disabled>Select</option>
+                                <select class="form-select" required id="selCategory" name="selCategory">
+                                    <option selected value="" disabled>Select</option>
                                     <option value="cleaning">Cleaning</option>
                                     <option value="cooking">Cooking</option>
                                     <option value="childcare">Childcare</option>
@@ -299,32 +479,39 @@
                                     <option value="housekeeping">Housekeeping</option>
                                     <option value="gardening">Gardening</option>
                                     <option value="shoppingErrands">Shopping/Errands</option>
-                                    <option value="organization">Organization/Decluttering</option>
+                                    <option value="organization">
+                                        Organization/Decluttering
+                                    </option>
                                     <option value="mealPreparation">Meal Preparation</option>
                                     <option value="babysitting">Babysitting</option>
                                     <option value="tutoring">Tutoring/Homework Help</option>
                                     <option value="driving">Driving</option>
-                                    <option value="specializedCleaning">Specialized Cleaning</option>
+                                    <option value="specializedCleaning">
+                                        Specialized Cleaning
+                                    </option>
                                     <option value="companionCare">Companion Care</option>
-                                    <option value="householdManagement">Household Management</option>
-                                    <option value="lightMaintenance">Light Maintenance/Repairs</option>
+                                    <option value="householdManagement">
+                                        Household Management
+                                    </option>
+                                    <option value="lightMaintenance">
+                                        Light Maintenance/Repairs
+                                    </option>
                                     <!-- <option value="other">Other (Please specify)</option> -->
                                 </select>
-                                <label for="selCategory" style="margin-left: 0.5rem;"> Type of Work</label>
+                                <label for="selCategory" style="margin-left: 0.5rem">
+                                    Type of Work</label>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radLoc" id="radHome" >
-                                    <label class="form-check-label" for="radHome">
-                                        Home
-                                    </label>
+                                    <input class="form-check-input" type="radio" name="radLoc" id="radHome" />
+                                    <label class="form-check-label" for="radHome"> Home </label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radLoc" id="radOther">
+                                    <input class="form-check-input" re type="radio" name="radLoc" id="radOther" />
                                     <label class="form-check-label" for="radOther">
                                         Other Location
                                     </label>
@@ -334,8 +521,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-floating mt-2">
-                                    <input type="text" class="form-control" id="txtAdd" name="txtAdd"
-                                        placeholder="rjdkwkwd">
+                                    <input type="text" required class="form-control" id="txtAdd" name="txtAdd"
+                                        placeholder="rjdkwkwd" />
                                     <label for="txtAdd">Address</label>
                                 </div>
                             </div>
@@ -343,14 +530,16 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <select class="form-select" id="selCity" name="selCity">
-                                        <option value="select" selected disabled>Select</option>
+                                    <select class="form-select" required id="selCity" name="selCity">
+                                        <option value="" selected disabled>Select</option>
                                         <option value="Adilabad">Adilabad</option>
                                         <option value="Agra">Agra</option>
                                         <option value="Ahmedabad">Ahmedabad</option>
                                         <option value="Ahmednagar">Ahmednagar</option>
                                         <option value="Aizawl">Aizawl</option>
-                                        <option value="Ajitgarh(Mohali)">Ajitgarh (Mohali)</option>
+                                        <option value="Ajitgarh(Mohali)">
+                                            Ajitgarh (Mohali)
+                                        </option>
                                         <option value="Ajmer">Ajmer</option>
                                         <option value="Akola">Akola</option>
                                         <option value="Alappuzha">Alappuzha</option>
@@ -402,7 +591,9 @@
                                         <option value="Baran">Baran</option>
                                         <option value="Bardhaman">Bardhaman</option>
                                         <option value="Bareilly">Bareilly</option>
-                                        <option value="Bargarh(Baragarh)">Bargarh (Baragarh)</option>
+                                        <option value="Bargarh(Baragarh)">
+                                            Bargarh (Baragarh)
+                                        </option>
                                         <option value="Barmer">Barmer</option>
                                         <option value="Barnala">Barnala</option>
                                         <option value="Barpeta">Barpeta</option>
@@ -459,9 +650,9 @@
                                         <option value="Chatra">Chatra</option>
                                         <option value="Chennai">Chennai</option>
                                         <option value="Chhatarpur">Chhatarpur</option>
-                                        <option value="ChhatrapatiShahujiMaharajNagar"> Chhatrapati Shahuji
-                                            Maharaj
-                                            Nagar </option>
+                                        <option value="ChhatrapatiShahujiMaharajNagar">
+                                            Chhatrapati Shahuji Maharaj Nagar
+                                        </option>
                                         <option value="Chhindwara">Chhindwara</option>
                                         <option value="Chikkaballapur">Chikkaballapur</option>
                                         <option value="Chikkamagaluru">Chikkamagaluru</option>
@@ -476,7 +667,9 @@
                                         <option value="CoochBehar">Cooch Behar</option>
                                         <option value="Cuddalore">Cuddalore</option>
                                         <option value="Cuttack">Cuttack</option>
-                                        <option value="DadraandNagarHaveli"> Dadra and Nagar Haveli </option>
+                                        <option value="DadraandNagarHaveli">
+                                            Dadra and Nagar Haveli
+                                        </option>
                                         <option value="Dahod">Dahod</option>
                                         <option value="DakshinDinajpur">Dakshin Dinajpur</option>
                                         <option value="DakshinaKannada">Dakshina Kannada</option>
@@ -489,7 +682,9 @@
                                         <option value="Datia">Datia</option>
                                         <option value="Dausa">Dausa</option>
                                         <option value="Davanagere">Davanagere</option>
-                                        <option value="Debagarh(Deogarh)">Debagarh (Deogarh)</option>
+                                        <option value="Debagarh(Deogarh)">
+                                            Debagarh (Deogarh)
+                                        </option>
                                         <option value="Dehradun">Dehradun</option>
                                         <option value="Deoghar">Deoghar</option>
                                         <option value="Deoria">Deoria</option>
@@ -546,7 +741,9 @@
                                         <option value="Ganganagar">Ganganagar</option>
                                         <option value="Ganjam">Ganjam</option>
                                         <option value="Garhwa">Garhwa</option>
-                                        <option value="GautamBuddhNagar">Gautam Buddh Nagar</option>
+                                        <option value="GautamBuddhNagar">
+                                            Gautam Buddh Nagar
+                                        </option>
                                         <option value="Gaya">Gaya</option>
                                         <option value="Ghaziabad">Ghaziabad</option>
                                         <option value="Ghazipur">Ghazipur</option>
@@ -617,9 +814,11 @@
                                         <option value="Jodhpur">Jodhpur</option>
                                         <option value="Jorhat">Jorhat</option>
                                         <option value="Junagadh">Junagadh</option>
-                                        <option value="JyotibaPhuleNagar">Jyotiba Phule Nagar</option>
-                                        <option value="Kabirdham(formerlyKawardha)"> Kabirdham (formerly
-                                            Kawardha)
+                                        <option value="JyotibaPhuleNagar">
+                                            Jyotiba Phule Nagar
+                                        </option>
+                                        <option value="Kabirdham(formerlyKawardha)">
+                                            Kabirdham (formerly Kawardha)
                                         </option>
                                         <option value="Kadapa">Kadapa</option>
                                         <option value="Kaimur">Kaimur</option>
@@ -627,7 +826,9 @@
                                         <option value="Kakinada">Kakinada</option>
                                         <option value="Kalahandi">Kalahandi</option>
                                         <option value="Kamrup">Kamrup</option>
-                                        <option value="KamrupMetropolitan">Kamrup Metropolitan</option>
+                                        <option value="KamrupMetropolitan">
+                                            Kamrup Metropolitan
+                                        </option>
                                         <option value="Kanchipuram">Kanchipuram</option>
                                         <option value="Kandhamal">Kandhamal</option>
                                         <option value="Kangra">Kangra</option>
@@ -652,11 +853,17 @@
                                         <option value="Katni">Katni</option>
                                         <option value="Kaushambi">Kaushambi</option>
                                         <option value="Kendrapara">Kendrapara</option>
-                                        <option value="Kendujhar(Keonjhar)"> Kendujhar (Keonjhar) </option>
+                                        <option value="Kendujhar(Keonjhar)">
+                                            Kendujhar (Keonjhar)
+                                        </option>
                                         <option value="Khagaria">Khagaria</option>
                                         <option value="Khammam">Khammam</option>
-                                        <option value="Khandwa(EastNimar)">Khandwa (East Nimar)</option>
-                                        <option value="Khargone(WestNimar)"> Khargone (West Nimar) </option>
+                                        <option value="Khandwa(EastNimar)">
+                                            Khandwa (East Nimar)
+                                        </option>
+                                        <option value="Khargone(WestNimar)">
+                                            Khargone (West Nimar)
+                                        </option>
                                         <option value="Kheda">Kheda</option>
                                         <option value="Khordha">Khordha</option>
                                         <option value="Khowai">Khowai</option>
@@ -700,7 +907,9 @@
                                         <option value="Leh">Leh</option>
                                         <option value="Lohardaga">Lohardaga</option>
                                         <option value="Lohit">Lohit</option>
-                                        <option value="LowerDibangValley">Lower Dibang Valley</option>
+                                        <option value="LowerDibangValley">
+                                            Lower Dibang Valley
+                                        </option>
                                         <option value="LowerSubansiri">Lower Subansiri</option>
                                         <option value="Lucknow">Lucknow</option>
                                         <option value="Ludhiana">Ludhiana</option>
@@ -789,14 +998,16 @@
                                         <option value="Palwal">Palwal</option>
                                         <option value="Panchkula">Panchkula</option>
                                         <option value="Panchmahal">Panchmahal</option>
-                                        <option value="PanchsheelNagardistrict(Hapur)"> Panchsheel Nagar
-                                            district
-                                            (Hapur) </option>
+                                        <option value="PanchsheelNagardistrict(Hapur)">
+                                            Panchsheel Nagar district (Hapur)
+                                        </option>
                                         <option value="Panipat">Panipat</option>
                                         <option value="Panna">Panna</option>
                                         <option value="PapumPare">Papum Pare</option>
                                         <option value="Parbhani">Parbhani</option>
-                                        <option value="PaschimMedinipur">Paschim Medinipur</option>
+                                        <option value="PaschimMedinipur">
+                                            Paschim Medinipur
+                                        </option>
                                         <option value="Patan">Patan</option>
                                         <option value="Pathanamthitta">Pathanamthitta</option>
                                         <option value="Pathankot">Pathankot</option>
@@ -830,7 +1041,8 @@
                                         <option value="Rajkot">Rajkot</option>
                                         <option value="Rajnandgaon">Rajnandgaon</option>
                                         <option value="Rajsamand">Rajsamand</option>
-                                        <option value="RamabaiNagar(KanpurDehat)"> Ramabai Nagar (Kanpur Dehat)
+                                        <option value="RamabaiNagar(KanpurDehat)">
+                                            Ramabai Nagar (Kanpur Dehat)
                                         </option>
                                         <option value="Ramanagara">Ramanagara</option>
                                         <option value="Ramanathapuram">Ramanathapuram</option>
@@ -862,7 +1074,9 @@
                                         <option value="Sangli">Sangli</option>
                                         <option value="Sangrur">Sangrur</option>
                                         <option value="SantKabirNagar">Sant Kabir Nagar</option>
-                                        <option value="SantRavidasNagar">Sant Ravidas Nagar</option>
+                                        <option value="SantRavidasNagar">
+                                            Sant Ravidas Nagar
+                                        </option>
                                         <option value="Saran">Saran</option>
                                         <option value="Satara">Satara</option>
                                         <option value="Satna">Satna</option>
@@ -870,7 +1084,9 @@
                                         <option value="Sehore">Sehore</option>
                                         <option value="Senapati">Senapati</option>
                                         <option value="Seoni">Seoni</option>
-                                        <option value="SeraikelaKharsawan">Seraikela Kharsawan</option>
+                                        <option value="SeraikelaKharsawan">
+                                            Seraikela Kharsawan
+                                        </option>
                                         <option value="Serchhip">Serchhip</option>
                                         <option value="Shahdol">Shahdol</option>
                                         <option value="Shahjahanpur">Shahjahanpur</option>
@@ -913,7 +1129,9 @@
                                         <option value="SriMuktsarSahib">Sri Muktsar Sahib</option>
                                         <option value="Srikakulam">Srikakulam</option>
                                         <option value="Srinagar">Srinagar</option>
-                                        <option value="Subarnapur(Sonepur)"> Subarnapur (Sonepur) </option>
+                                        <option value="Subarnapur(Sonepur)">
+                                            Subarnapur (Sonepur)
+                                        </option>
                                         <option value="Sultanpur">Sultanpur</option>
                                         <option value="Sundergarh">Sundergarh</option>
                                         <option value="Supaul">Supaul</option>
@@ -928,7 +1146,9 @@
                                         <option value="Thanjavur">Thanjavur</option>
                                         <option value="TheDangs">The Dangs</option>
                                         <option value="Theni">Theni</option>
-                                        <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                                        <option value="Thiruvananthapuram">
+                                            Thiruvananthapuram
+                                        </option>
                                         <option value="Thoothukudi">Thoothukudi</option>
                                         <option value="Thoubal">Thoubal</option>
                                         <option value="Thrissur">Thrissur</option>
@@ -995,17 +1215,22 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <select class="form-select" id="selState" name="selState">
-                                        <option value="Select" selected disabled>Select</option>
+                                    <select class="form-select" required id="selState" name="selState">
+                                        <option value="" selected disabled>Select</option>
                                         <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands
+                                        <option value="Andaman and Nicobar Islands">
+                                            Andaman and Nicobar Islands
                                         </option>
-                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Arunachal Pradesh">
+                                            Arunachal Pradesh
+                                        </option>
                                         <option value="Assam">Assam</option>
                                         <option value="Bihar">Bihar</option>
                                         <option value="Chandigarh">Chandigarh</option>
                                         <option value="Chhattisgarh">Chhattisgarh</option>
-                                        <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+                                        <option value="Dadar and Nagar Haveli">
+                                            Dadar and Nagar Haveli
+                                        </option>
                                         <option value="Daman and Diu">Daman and Diu</option>
                                         <option value="Delhi">Delhi</option>
                                         <option value="Lakshadweep">Lakshadweep</option>
@@ -1014,7 +1239,9 @@
                                         <option value="Gujarat">Gujarat</option>
                                         <option value="Haryana">Haryana</option>
                                         <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                        <option value="Jammu and Kashmir">
+                                            Jammu and Kashmir
+                                        </option>
                                         <option value="Jharkhand">Jharkhand</option>
                                         <option value="Karnataka">Karnataka</option>
                                         <option value="Kerala">Kerala</option>
@@ -1042,8 +1269,8 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-floating mt-2">
-                                    <input type="date" class="form-control" id="dtUpto" name="dtUpto"
-                                        placeholder="1/1/2001">
+                                    <input type="date" class="form-control" required id="dtUpto" name="dtUpto"
+                                        placeholder="1/1/2001" />
                                     <label for="dtUpto">Upto date</label>
                                 </div>
                             </div>
@@ -1051,54 +1278,60 @@
                         <div class="row mt-2">
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="work description" id="otherInfo"
-                                        style="height: 100px"></textarea>
+                                    <textarea class="form-control" required placeholder="work description"
+                                        id="otherInfo" style="height: 100px"></textarea>
                                     <label for="otherInfo">Work Description</label>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer" style="display: flex; justify-content: center;">
-                    <input type="button" class="btn btn-primary" id="btnPostTask" value="Post Task">
+                <div class="modal-footer" style="display: flex; justify-content: center">
+                    <input type="button" class="btn btn-primary" id="btnPostTask" style="background:#004aad;"
+                        value="Post Task" />
                     <!-- <button type="button" class="btn btn-primary" id="btnPostTask">Post Task</button> -->
                 </div>
             </div>
         </div>
     </div>
 
-
     <!-- Settings Modal -->
     <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Profile Settings</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        Profile Settings
+                    </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- email -->
                     <div class="form-floating mt-2">
                         <input type="email" class="form-control txtbox" id="emailBox" name="emailBox"
-                            placeholder="name@example.com" value="rishabhsaggar30@gmail.com" disabled>
+                            placeholder="name@example.com" value="" disabled />
                         <label for="emailBox">Email address</label>
                     </div>
                     <!-- Password login -->
                     <div class="form-floating mt-2">
                         <input type="password" class="form-control txtbox" id="txtOldPwd" name="txtOldPwd"
-                            value="myAdmin@123" placeholder="Password">
+                            value="" placeholder="Password" />
                         <label for="txtOldPwd">Old Password</label>
                     </div>
 
                     <div class="form-floating mt-2">
                         <input type="password" class="form-control txtbox" id="txtNewPwd" name="txtNewPwd"
-                            value="myAdmin@123" placeholder="Password">
+                            value="" placeholder="Password" />
                         <label for="txtNewPwd">New Password</label>
                     </div>
                 </div>
-                <div class="modal-footer" style="display: flex; justify-content: center;">
-                    <button type="button" class="btn btn-primary" id="btnChanges">Save changes</button>
-                    <button type="button" class="btn btn-secondary" id="btnLogout">Logout</button>
+                <div class="modal-footer" style="display: flex; justify-content: center">
+                    <button type="button" class="btn btn-primary" id="btnChanges">
+                        Save changes
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnLogout">
+                        Logout
+                    </button>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page</title>
+    <title>Dashboard</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Slab">
@@ -36,7 +36,7 @@
 
         })
     </script>
-
+<link rel="icon" type="png" href="/assets/projectLogo2.png">
     <style>
         body {
             font-family: 'Roboto Slab', sans-serif;
@@ -54,7 +54,7 @@
         }
 
         .card {
-            width: 20rem;
+            width: 18rem;
             height: 30rem;
             margin: 2rem;
             padding: 1rem;
@@ -72,25 +72,55 @@
         }
 
         .card h2 {
-            color: #2a7ab0;
+            color:  #0056b3;
         }
 
         .card i {
             font-size: 2em;
-            color: #2a7ab0;
+            color:  #0056b3;
+        }
+
+        .nav-item {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .nav-link:hover {
+            color: #459af4;
+        }
+
+        #navA {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navB {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #navA:hover {
+
+            color: #459af4;
+        }
+
+        #navB:hover {
+            color: #459af4;
         }
     </style>
 
 </head>
 
 <body ng-app="myModule" ng-controller="myController">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg py-0" style="background-color: #004aad">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="/images/projectLogo.png" alt="Logo" width="30" height="30"
-                    class="d-inline-block align-text-top">
-                <span style="color:#0072a9">Maid </span><span style="color:#01a2e9">for </span><span
-                    style="color:#0072a9">Each Other</span></a>
+            <a class="navbar-brand" href="admin-dash.html">
+                <img src="/assets/Full logo.png" alt="Logo" height="50" class="d-inline-block align-text-top" />
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -99,39 +129,38 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" aria-current="page" href="admin-dash.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="/user-manager.html">User Manager</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin-provider.html">Work-Providers</a>
+                    </li>
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin-customer.html">Customers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" href="/admin-feedback.html">Feedbacks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="window.location='/index.html'">Logout</a>
                     </li>
                 </ul>
-
             </div>
         </div>
     </nav>
     <div class="dashboard">
         <div class="row">
+            <span> Welcome Admin <i style="color:#004aad" class="fa-solid fa-circle-user"></i></span>
+        </div>
+        <div class="row">
             <!-- User Manager Card -->
             <div class="card">
                 <a href="user-manager.html" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-tasks" style="color:black"></i>
+                    <i class="fa fa-address-book fa-xl" style="color:black"></i>
                     <h2>User Manager</h2>
                     <p style="color:black">Manage your users here.</p>
                 </a>
@@ -140,7 +169,7 @@
             <!-- Providers -->
             <div class="card">
                 <a href="admin-provider.html" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fa fa-address-book" style="color:black"></i>
+                    <i class="fa-solid fa-users-gear fa-xl" style="color:black"></i>
                     <h2>Work-Providers</h2>
                     <p style="color:black">Your providers' detials here.</p>
                 </a>
@@ -149,12 +178,18 @@
             <!-- Customer Card -->
             <div class="card" data-bs-toggle="modal" data-bs-target="#postTask">
                 <a href="admin-customer.html" style="text-decoration: none; color: #2a7ab0;">
-                    <i class="fas fa-users" style="color:black"></i>
+                    <i class="fas fa-users fa-xl" style="color:black"></i>
                     <h2>Customers</h2>
                     <p style="color:black">Your customers' details here.</p>
                 </a>
             </div>
-
+            <div class="card">
+                <a href="admin-feedback.html" style="text-decoration: none; color: #2a7ab0;">
+                    <i class="fas fa-tasks fa-xl" style="color:black"></i>
+                    <h2>Feedbacks</h2>
+                    <p style="color:black">Manage your feedbacks here.</p>
+                </a>
+            </div>
 
 
         </div>

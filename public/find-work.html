@@ -36,8 +36,9 @@
         var controller = module.controller("myController", function ($scope, $http) {
             $scope.respJsonAry = [];
             $scope.selObj;
-            $scope.respCustomerAry=[];
+            $scope.respCustomerAry = [];
             $scope.selImage;
+            $scope.detailsAry = [];
 
             $scope.doFetch = function () {
                 let url = "/doFetchTasks";
@@ -79,7 +80,7 @@
                 }
 
             }
-//=================================================================================
+            //=================================================================================
             $scope.doShowSelCategory = function () {
 
                 let url = "/search-work?kuchCat=" + $scope.selCategory.category + "&kuchCity=" + $scope.selCity.city;
@@ -92,20 +93,61 @@
                     alert(response.data);
                 }
             }
-//================================================================================
-            $scope.doShowDetails = function (index) {
-                // alert(index);
+            //================================================================================
+
+            // $scope.doFetchCat = function(email){
+
+            // }
+
+            $scope.doShowDetails = function (index, email) {
+                // alert();
+                console.log(index + " " + email);
                 //alert(JSON.stringify($scope.jsonRecordsAry[index]));
                 $scope.selObj = $scope.respJsonAry[index];
 
+                let url = "/doFetchCat?kuchEmail=" + email;
+
+                $http.get(url).then(success, errors)
+                function success(resp) {
+                    // console.log("pehla vapis aagya");
+                    $scope.cat = resp.data;
+
+                    $scope.doFetchDetails(email,$scope.cat);
+
+                }
+                function errors(resp) {
+                    alert(resp.data);
+                }
+
+                // $scope.detailsAry=doFetchDetails(email,$scope.cat);
+
             }
-//============================================================================
-            $scope.doFetchUsers= function(){
+
+
+
+            $scope.doFetchDetails = function (email, cat) {
+                console.log("in do Fectch details")
+                let url2 = "/doFetchDetails?kuchEmail=" + email + "&kuchCat=" + cat;
+
+                $http.get(url2).then(success, errors)
+
+                function success(resp) {
+                    // console.log("doosra vapis aagya")
+                    $scope.detailsAry = resp.data;
+                }
+                function errors(resp) {
+                    alert(resp.data);
+                }
+            }
+
+            //============================================================================
+            $scope.doFetchUsers = function () {
                 let url = "/doFetchUsers";
 
                 $http.get(url).then(success, errors);
 
                 function success(resp) {
+                    // console.log(resp.data);
                     $scope.respCustomerAry = resp.data;
                 }
 
@@ -113,19 +155,20 @@
                     alert(resp.data);
                 }
             }
-//===============================================================================
-            $scope.doFetchImages= function(email){
-                let url="/doFetchImg?kuchEmail="+email;
-                $http.get(url).then(success, errors);
+            //===============================================================================
+            // $scope.doFetchImages = function (email) {
+            //     let url = "/previewProfile?kuchEmail=" + email;
+            //     $http.get(url).then(success, errors);
 
-                function success(resp) {
-                    $scope.selImg = resp.data;
-                }
+            //     function success(resp) {
+            //         console.log("image aagyi");
+            //         $scope.selImg = resp.data;
+            //     }
 
-                function errors(resp) {
-                    alert(resp.data);
-                }
-            }
+            //     function errors(resp) {
+            //         alert(resp.data);
+            //     }
+            // }
         });
     </script>
 
@@ -156,7 +199,7 @@
         }
 
         .card {
-            width: 32rem;
+            width: 30rem;
             margin: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -180,23 +223,99 @@
         }
 
         .card-body {
-            text-align: center;
+            text-align: left;
             display: flexbox;
             justify-content: space-around;
             flex-wrap: wrap;
         }
 
         #btnSearch {
+            background-color: #004aad;
             line-height: 2.5rem;
             border-radius: 10px;
+            width: 10rem;
+            font-size: large;
+        }
+
+        .nav-item {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .nav-link:hover {
+            color: #459af4;
+        }
+
+        .sp {
+            /* text-decoration: underline; */
+            /* font-size: large; */
+            color: #004aad;
+        }
+
+        .ms{
+            color: #004aad;
+            size: large;
+        }
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        .modal-header {
+            background-color: #004aad;
+            color: #fff;
+            border-bottom: 2px solid #0056b3;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-family: Roboto Slab;
         }
     </style>
+    <link rel="icon" type="png" href="/assets/projectLogo2.png">
 </head>
 
 <body ng-app="myModule" ng-controller="myController" ng-init="doFetchDistinctCities();doFetchUsers()">
-    <center>
-        <h2>Find Work</h2>
-    </center>
+    <nav class="navbar navbar-expand-lg py-0" style="background-color: #004aad">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="provider-dash.html">
+                <img src="/assets/Full logo.png" alt="Logo" height="50" class="d-inline-block align-text-top" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="provider-dash.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider-profile.html">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/find-work.html">Find Work</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/task-manager-provider.html">Task Manager</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider-contactUs.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="mt-4">
+        <center>
+            <img src="/assets/findWork.png" width="300rem" alt="">
+        </center>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-4">
@@ -217,25 +336,34 @@
                     <label for="selCategory">Category</label>
                 </div>
             </div>
-            <div class="col-md-3" ">
-                <button type=" button" class="btn btn-primary" id="btnSearch" style="line-height: 2.5rem; border-radius: 10px;"
-                ng-click="doShowSelCategory(); doFetchImages()">Search Now</button>
+            <div class="col-md-3">
+                <button type=" button" class="btn btn-primary" id="btnSearch"
+                    style="line-height: 2.5rem; border-radius: 10px;"
+                    ng-click="doShowSelCategory(); doFetchImages()">Search
+                    Now</button>
             </div>
         </div>
         <!--work cards -->
         <div class="work-area">
             <div class="row">
-                <div class="card" ng-repeat="obj in respJsonAry" data-bs-toggle="modal" data-bs-target="#detailsModal" ng-click="doShowDetails($index)">
-                    <div class="card-photo">
-                        <img src="uploads/{{selImg.ppic}}" class="card-img-top" alt="image here" style="width: 10rem;">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{obj.emailid}}</h5>
+                <div class="card" ng-repeat="obj in respJsonAry" data-bs-toggle="modal" data-bs-target="#detailsModal"
+                    ng-click="doShowDetails($index,obj.emailid)">
+                    <div class="card-body text-left">
+                        <h4 class="card-title">{{obj.category}}</h4>
                         <p class="card-text">
                             <!-- <div>{{$index}}</div> -->
-                        <div>Category:{{obj.category}}</div>
-                        <div>City:{{obj.city}}</div>
-                        <div>Upto:{{obj.upto}}</div>
+                        <div>
+                            <h5><span class="sp">Email Id: </span>{{obj.emailid}}</h5>
+                        </div>
+                        <!-- <div>
+                            <h5><span class="sp">Address: </span>{{obj.address}}</h5>
+                        </div> -->
+                        <div>
+                            <h5><span class="sp">City: </span>{{obj.city}}</h5>
+                        </div>
+                        <div>
+                            <h5><span class="sp">Upto: </span>{{obj.upto}}</h5>
+                        </div>
                         </p>
                     </div>
                 </div>
@@ -245,41 +373,44 @@
 
     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2 class="modal-title fs-5" id="detailsModalLabel">Details</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>
-                    <center>
-                    <img src="uploads/{{selImg.ppic}}" width="120px" height="120px" alt="">
-                </center>
-                </p>
-                <p>
-                    Email Id: {{selObj.emailid}}
-                </p>
-                <p>
-                    Category: {{selObj.category}}
-                </p>
-                <p>
-                    Address: {{selObj.address}}
-                </p>
-                <p>
-                    Upto: {{selObj.upto}}
-                </p>
-                <p>
-                    Description: {{selObj.info}}
-                </p>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5" id="detailsModalLabel">Details</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <center>
+                            <img src="/uploads/{{detailsAry[0].ppic}}" height="120px" alt="nopic">
+                        </center>
+                    </p>
+                    <p>
+                        <span class="ms">Email Id: </span>{{selObj.emailid}}
+                    </p>
+                    <p>
+                        <span class="ms">Category: </span> {{selObj.category}}
+                    </p>
+                    <p>
+                        <span class="ms">Contact Number: </span> {{detailsAry[0].cnumber}}
+                    </p>
+                    <p>
+                        <span class="ms">Address: </span>{{selObj.address}}
+                    </p>
+                    <p>
+                        <span class="ms">City: </span>{{selObj.city}}   &nbsp;&nbsp;&nbsp;  <span class="ms"> State: </span>{{selObj.state}}
+                    </p>
+                    <p>
+                        <span class="ms">Upto: </span>{{selObj.upto}}
+                    </p>
+                    <p>
+                        <span class="ms">Description: </span>{{selObj.otherinfo}}
+                    </p>
 
+                </div>
+                
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 </body>
 
 </html>

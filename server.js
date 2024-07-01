@@ -52,13 +52,32 @@ app.get("/sign_up", function (req, resp) {
         console.log("Email id already exist");
         resp.send("Email id already exist");
       } else {
+        //  if(resultJsonAry[0].kuchType=="")
+
         mysql.query(
           "insert into users values(?,?,?,current_date,1)",
           [emailId, pwd, uType],
           function (err) {
             if (err == null) {
-              console.log(uType);
-              resp.send(uType);
+              if (uType == "Customer") {
+                mysql.query(
+                  "insert into customer_info(email) values(?)",
+                  [emailId],
+                  function (err, resultJson) {
+                    console.log(err);
+                    resp.send(uType);
+                  }
+                );
+              } else {
+                mysql.query(
+                  "insert into providers(emailid) values(?)",
+                  [emailId],
+                  function (err, resultJson) {
+                    console.log(err);
+                    resp.send(uType);
+                  }
+                );
+              }
             } else {
               console.log(err.message);
               resp.send(err);
@@ -85,17 +104,28 @@ app.get("/login", function (req, resp) {
         return;
       }
 
-      if (resultJsonAry.length == 1) {
-        if (resultJsonAry[0].userStatus === 1) {
-          console.log("Login successful. UserType:", resultJsonAry[0].userType);
-          resp.send(resultJsonAry[0].userType);
-        } else {
-          console.log("User is blocked.");
-          resp.send("User-Blocked");
-        }
+      if (
+        req.query.loginEmail == "adminLogin1@gmail.com" &&
+        req.query.loginPwd == "myAdmin@1"
+      ) {
+        resp.send("Admin");
+        return;
       } else {
-        console.log("Invalid email or password.");
-        resp.send("Invalid Email or Password");
+        if (resultJsonAry.length == 1) {
+          if (resultJsonAry[0].userStatus === 1) {
+            console.log(
+              "Login successful. UserType:",
+              resultJsonAry[0].userType
+            );
+            resp.send(resultJsonAry[0].userType);
+          } else {
+            console.log("User is blocked.");
+            resp.send("User-Blocked");
+          }
+        } else {
+          console.log("Invalid email or password.");
+          resp.send("Invalid Email or Password");
+        }
       }
     }
   );
@@ -119,40 +149,40 @@ app.get("/check-email", function (req, resp) {
   );
 });
 //create table customer_info(email varchar(100) primary key,cname varchar(50),cnumber varchar(15),address varchar(100),city varchar(30),state varchar(20),ppic varchar(100));
-app.post("/profile-save", function (req, resp) {
-  console.log(req.query);
-  const email = req.body.txtEmail;
-  const name = req.body.txtName;
-  const cnumber = req.body.txtNumber;
-  const address = req.body.txtAdd;
-  const city = req.body.selCity;
-  const state = req.body.selState;
+// app.post("/profile-save", function (req, resp) {
+//   const email = req.body.txtEmail;
+//   const name = req.body.txtName;
+//   const cnumber = req.body.txtNumber;
+//   const address = req.body.txtAdd;
+//   const city = req.body.selCity;
+//   const state = req.body.selState;
+//   console.log(req.body.txtEmail);
+//   // console.log(req.)
+//   //pic-uploading
 
-  //pic-uploading
+//   let filename;
+//   if (req.files == null) filename = "nopic.jpg";
+//   else {
+//     filename = req.files.ppic.name;
+//     let path = process.cwd() + "/public/uploads/" + filename;
+//     req.files.ppic.mv(path);
+//   }
+//   req.body.ppic = filename; //why this?
 
-  let filename;
-  if (req.files == null) filename = "nopic.jpg";
-  else {
-    filename = req.files.ppic.name;
-    let path = process.cwd() + "/public/uploads/" + filename;
-    req.files.ppic.mv(path);
-  }
-  req.body.ppic = filename; //why this?
-
-  mysql.query(
-    "insert into customer_info values(?,?,?,?,?,?,?)",
-    [email, name, cnumber, address, city, state, filename],
-    function (err) {
-      if (err == null) {
-        alert("RECORD SAVED SUCCESSFULLY");
-        location.href="/public/customer-profile.html";
-      } else {
-        console.log(err);
-        resp.send(err.message);
-      }
-    }
-  );
-});
+//   mysql.query(
+//     "insert into customer_info values(?,?,?,?,?,?,?)",
+//     [email, name, cnumber, address, city, state, filename],
+//     function (err) {
+//       if (err == null) {
+//         alert("RECORD SAVED SUCCESSFULLY");
+//         location.href = "/public/customer-profile.html";
+//       } else {
+//         console.log(err);
+//         resp.send(err.message);
+//       }
+//     }
+//   );
+// });
 
 app.post("/profile-update", function (req, resp) {
   const email = req.body.txtEmail;
@@ -161,27 +191,29 @@ app.post("/profile-update", function (req, resp) {
   const address = req.body.txtAdd;
   const city = req.body.selCity;
   const state = req.body.selState;
-
+  const hdnImg = req.body.hdnImg;
   //pic-uploading
 
   let filename;
   if (req.files == null) {
-    filename = "nopic.jpg";
-
+    // filename = "nopic.jpg";
+    filename = hdnImg; //for handling that ki agr image update nahi huyi toh vahi image rahe jo pehle thi
   } else {
     filename = req.files.ppic.name;
     let path = process.cwd() + "/public/uploads/" + filename;
     req.files.ppic.mv(path);
   }
-  req.body.ppic = filename; //why this?
+  req.body.ppic = filename;
 
   mysql.query(
     "update customer_info set cname=?, cnumber=?, address=?, city=?, state=?, ppic=? where email=? ",
     [name, cnumber, address, city, state, filename, email],
-    function (err,respJson) {
+    function (err, respJson) {
       if (err == null) {
         console.log(respJson);
-        resp.send("RECORD UPDATED SUCCESSFULLY");
+        let filepath = process.cwd() + "/public/customer-profile.html";
+        resp.sendFile(filepath);
+        // location.href = '/customer-dash2.html';
       } else {
         resp.send(err.message);
       }
@@ -208,6 +240,7 @@ app.get("/fetch-one", function (req, resp) {
 });
 
 app.get("/pwd-change", function (req, resp) {
+  // console.log("pwd-change request query:"+req.query);
   console.log(req.query);
   mysql.query(
     "select * from users where emailId=? and pwd=?",
@@ -224,13 +257,14 @@ app.get("/pwd-change", function (req, resp) {
       if (respJsonAry.length >= 1) {
         mysql.query(
           "update users set pwd=? where emailId=?",
-          [req.query.kuchNewPwd, req.query.kuchEmail],
+          [req.query.kuchNewPwd, req.query.bssEmail],
           function (err) {
             if (err != null) {
               console.log(err);
               resp.send(err);
               return;
             }
+            console.log("PassWord updated Successfully");
             resp.send("PassWord updated Successfully");
           }
         );
@@ -241,67 +275,67 @@ app.get("/pwd-change", function (req, resp) {
   );
 });
 
-//create table providers(emailid varchar(100), pname varchar(50), pnumber varchar(15),gender varchar(20), faddress varchar(100), haddress varchar(100),city varchar(40),state varchar(20),category varchar(100),firm varchar(100), website varchar(100), since int , idproof varchar(100), otherinfo varchar(1000));
+//create table providers(emailid varchar(100), pname varchar(50), cnumber varchar(15),gender varchar(20), faddress varchar(100), haddress varchar(100),city varchar(40),state varchar(20),category varchar(100),firm varchar(100), website varchar(100), since int , idproof varchar(100), otherinfo varchar(1000));
 
-app.post("/profile-provider-save", function (req, resp) {
-  const email = req.body.txtEmail;
-  const pname = req.body.txtPName;
-  const pnumber = req.body.txtNumber;
-  const gender = req.body.selGender;
-  const category = req.body.selCategory;
-  const firm = req.body.txtFirm;
-  const web = req.body.txtWeb;
-  const fAddress = req.body.txtFAdd;
-  const hAddress = req.body.txtHAdd;
-  const city = req.body.selCity;
-  const state = req.body.selState;
-  const since = req.body.dtSince;
-  const others = req.body.otherInfo;
+// app.post("/profile-provider-save", function (req, resp) {
+//   const email = req.body.txtEmail;
+//   const pname = req.body.txtPName;
+//   const cnumber = req.body.txtNumber;
+//   const gender = req.body.selGender;
+//   const category = req.body.selCategory;
+//   const firm = req.body.txtFirm;
+//   const web = req.body.txtWeb;
+//   const fAddress = req.body.txtFAdd;
+//   const hAddress = req.body.txtHAdd;
+//   const city = req.body.selCity;
+//   const state = req.body.selState;
+//   const since = req.body.dtSince;
+//   const others = req.body.otherInfo;
 
-  //pic-uploading
+//   //pic-uploading
 
-  let filename;
-  if (req.files == null) filename = "nopic.jpg";
-  else {
-    filename = req.files.idPic.name;
-    let path = process.cwd() + "/public/uploads/" + filename;
-    req.files.idPic.mv(path);
-  }
-  req.body.idPic = filename; //why this?
+//   let filename;
+//   if (req.files == null) filename = "nopic.jpg";
+//   else {
+//     filename = req.files.idPic.name;
+//     let path = process.cwd() + "/public/uploads/" + filename;
+//     req.files.idPic.mv(path);
+//   }
+//   req.body.idPic = filename; //why this?
 
-  mysql.query(
-    "insert into providers values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-    [
-      email,
-      pname,
-      pnumber,
-      gender,
-      fAddress,
-      hAddress,
-      city,
-      state,
-      category,
-      firm,
-      web,
-      since,
-      filename,
-      others,
-    ],
-    function (err) {
-      if (err == null) {
-        resp.send("RECORD SAVED SUCCESSFULLY");
-      } else {
-        resp.send(err.message);
-      }
-    }
-  );
-});
+//   mysql.query(
+//     "insert into providers values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+//     [
+//       email,
+//       pname,
+//       cnumber,
+//       gender,
+//       fAddress,
+//       hAddress,
+//       city,
+//       state,
+//       category,
+//       firm,
+//       web,
+//       since,
+//       filename,
+//       others,
+//     ],
+//     function (err) {
+//       if (err == null) {
+//         resp.send("RECORD SAVED SUCCESSFULLY");
+//       } else {
+//         resp.send(err.message);
+//       }
+//     }
+//   );
+// });
 
 app.post("/profile-provider-update", function (req, resp) {
   console.log(req.body);
   const email = req.body.txtEmail;
   const pname = req.body.txtPName;
-  const pnumber = req.body.txtNumber;
+  const cnumber = req.body.txtNumber;
   const gender = req.body.selGender;
   const category = req.body.selCategory;
   const firm = req.body.txtFirm;
@@ -316,19 +350,21 @@ app.post("/profile-provider-update", function (req, resp) {
   //pic-uploading
 
   let filename;
-  if (req.files == null) filename = "nopic.jpg";
-  else {
-    filename = req.files.idPic.name;
+  if (req.files == null) {
+    filename = "nopic.jpg";
+    filename = req.body.hdnImg;
+  } else {
+    filename = req.files.ppic.name;
     let path = process.cwd() + "/public/uploads/" + filename;
-    req.files.idPic.mv(path);
+    req.files.ppic.mv(path);
   }
-  req.body.idPic = filename; //why this?
+  req.body.ppic = filename;
 
   mysql.query(
-    "update providers set pname=?, pnumber=?,gender=?,faddress=?,haddress=?,city=?,state=?,category=?,firm=?,website=?,since=?,idproof=?,otherinfo=? where emailid=? ",
+    "update providers set pname=?, cnumber=?,gender=?,faddress=?,haddress=?,city=?,state=?,category=?,firm=?,website=?,since=?,ppic=?,otherinfo=? where emailid=? ",
     [
       pname,
-      pnumber,
+      cnumber,
       gender,
       fAddress,
       hAddress,
@@ -344,8 +380,9 @@ app.post("/profile-provider-update", function (req, resp) {
     ],
     function (err) {
       if (err == null) {
-        //console.log(respJsonAry);
-        resp.send("RECORD UPDATED SUCCESSFULLY");
+        // console.log(respJsonAry);
+        let filepath = process.cwd() + "/public/provider-profile.html";
+        resp.sendFile(filepath);
       } else {
         resp.send(err.message);
       }
@@ -363,7 +400,8 @@ app.get("/fetch-one-provider", function (req, resp) {
         resp.send(err);
         return;
       }
-      //console.log(resultJsonAry);
+      // console.log("FETCH vala Console")
+      // console.log(resultJsonAry);
       resp.send(resultJsonAry);
     }
   );
@@ -387,6 +425,7 @@ app.get("/post-task", function (req, resp) {
     function (err) {
       if (err != null) {
         console.log(err);
+        alert(err.message);
         return;
       }
       //return;
@@ -463,17 +502,21 @@ app.get("/doFetchTask",function(req,resp){ //akela resp nahi chlta kyuki akela r
 app.get("/doFetchTask", function (req, resp) {
   //akela resp nahi chlta kyuki akela resp exist nahi krta...system confuse ho jata ki kyaa yeh req hai yaa resp
 
-  var email=req.query.kuchEmail;
+  var email = req.query.kuchEmail;
 
-  mysql.query("select * from tasks where emailid=?",[email], function (err, resultJsonAry) {
-    if (err != null) {
-      console.log(err);
-      resp.send(err);
-      return;
+  mysql.query(
+    "select * from tasks where emailid=?",
+    [email],
+    function (err, resultJsonAry) {
+      if (err != null) {
+        console.log(err);
+        resp.send(err);
+        return;
+      }
+      //console.log(resultJsonAry);
+      resp.send(resultJsonAry);
     }
-    //console.log(resultJsonAry);
-    resp.send(resultJsonAry);
-  });
+  );
 });
 
 app.get("/doDelete", function (req, resp) {
@@ -483,8 +526,7 @@ app.get("/doDelete", function (req, resp) {
     [req.query.rid],
     function (err, result) {
       if (err == null) {
-        if (result.affectedRows == 1)
-          resp.send("Record Deleted Successfullyyy");
+        if (result.affectedRows == 1) resp.send("Task Deleted Successfullyyy");
         else resp.send("Inavlid ID");
       } else resp.send(err.message);
     }
@@ -614,9 +656,11 @@ app.get("/forgetPassword", function (req, resp) {
 
         let config = {
           service: "gmail",
+          secure: true,
+          port: 465,
           auth: {
-            user: "rishabhsaggar927@gmail.com",
-            pass: "xjiu qwwe mpqs ohej",
+            user: "maidjodi1@gmail.com",
+            pass: "ztae ozbe qgwr lhhz",
           },
         };
 
@@ -633,7 +677,7 @@ app.get("/forgetPassword", function (req, resp) {
         let response = {
           body: {
             name: UserName,
-            intro: "Password of your email account",
+            intro: "Password of your email account is given below ->",
             table: {
               data: [
                 {
@@ -651,10 +695,9 @@ app.get("/forgetPassword", function (req, resp) {
         let mail = MailGenerator.generate(response);
 
         let message = {
-          from: "rishabhsaggar927@gmail.com",
+          from: "maidjodi1@gmail.com",
           to: UserName,
           subject: "Password for your Account",
-
           html: mail,
         };
 
@@ -672,13 +715,111 @@ app.get("/forgetPassword", function (req, resp) {
   );
 });
 
-app.get("/fetchAddCust",function(req,resp){
-  mysql.query("select * from customer_info where email=?",[req.query.email],function(err,respJsonAry){
-    if(err!=null){
-      resp.send(err);
+app.get("/fetchAddCust", function (req, resp) {
+  mysql.query(
+    "select * from customer_info where email=?",
+    [req.query.email],
+    function (err, respJsonAry) {
+      if (err != null) {
+        resp.send(err);
+      }
+
+      console.log(respJsonAry);
+      resp.send(respJsonAry);
     }
-    
-    console.log(respJsonAry);
-    resp.send(respJsonAry);
-  })
-})
+  );
+});
+
+app.get("/fetchAddProv", function (req, resp) {
+  // console.log(req.query);
+  mysql.query(
+    "select * from providers where emailid=?",
+    [req.query.email],
+    function (err, respJsonAry) {
+      if (err != null) {
+        resp.send(err);
+      }
+
+      // console.log(respJsonAry);
+      resp.send(respJsonAry);
+    }
+  );
+});
+
+// app.get("/previewProfile",function(req,resp){
+//   // console.log(req.query);
+//   mysql.query("select ppic from customers where emailid=?",[req.query],function(respJson){
+
+//   })
+// })
+
+app.get("/doFetchCat", function (req, resp) {
+  // console.log(req.query);
+  mysql.query(
+    "select userType from users where emailId=?",
+    [req.query.kuchEmail],
+    function (err, respJson) {
+      if (err != null) console.log(err.message);
+
+      // console.log(respJson);
+      resp.send(respJson[0].userType);
+    }
+  );
+});
+
+app.get("/doFetchDetails", function (req, resp) {
+  console.log(req.query.kuchCat);
+  if (req.query.kuchCat === "Customer") {
+    mysql.query(
+      "select * from customer_info where email=?",
+      [req.query.kuchEmail],
+      function (err, respJson) {
+        if (err != null) console.log(err.message);
+
+        console.log(respJson);
+        resp.send(respJson);
+      }
+    );
+  }
+
+  if (req.query.kuchCat === "Service-Provider") {
+    // console.log("in service provider");
+    mysql.query(
+      "select * from providers where emailid=?",
+      [req.query.kuchEmail],
+      function (err, respJson) {
+        if (err != null) console.log(err.message);
+        console.log(respJson);
+        resp.send(respJson);
+      }
+    );
+  }
+});
+
+app.get("/post-feedback", function (req, resp) {
+  mysql.query(
+    "insert into feedbacks values(?,?,?,?)",
+    [req.query.email, req.query.cname, req.query.cnumber, req.query.feedback],
+    function (err) {
+      if (err != null) {
+        console.log(err);
+        alert(err.message);
+        return;
+      }
+      //return;
+      resp.send("Feedback-Posted");
+    }
+  );
+});
+
+app.get("/doFetchFeedbacks", function (req, resp) {
+  mysql.query("select * from feedbacks", function (err, resultJsonAry) {
+    if (err != null) {
+      console.log(err);
+      resp.send(err);
+      return;
+    }
+    //console.log(resultJsonAry);
+    resp.send(resultJsonAry);
+  });
+});
