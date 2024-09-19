@@ -146,7 +146,11 @@
                         loginPwd: $("#txtPwdLogin").val()
                     }
                 }
-
+                if($("#txtEmailLogin").val()=="admin1@gmail.com" && $("#txtPwdLogin").val()=="123"){
+                    localStorage.setItem("user", $("#txtEmailLogin").val());
+                    window.location = '/admin-dash.html';
+                }
+                else{
                 $.ajax(obj).done(function (resp) {
                     console.log(resp);
                     if (resp == "Service-Provider") {
@@ -172,6 +176,7 @@
                 }).fail(function (err) {
                     alert(err);
                 });
+            }
             })
 
             $('#togglePwd2').click(function () {

@@ -27,26 +27,57 @@
 
     <!-- Font Awesome Icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
-    
+
+      <!-- Data Tables -->
+    <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet">
+
     <script>
          var module = angular.module("myModule", []);
-        var controller = module.controller("myController", function ($scope, $http) {
+         module.controller("myController", function ($scope, $http, $timeout) {
             $scope.respJsonAry = [];
+
             $scope.doFetch = function () {
                 let url = "/doFetchProviders";
 
-                $http.get(url).then(success, errors);
-
-                function success(resp) {
+                $http.get(url).then(function success(resp) {
                     $scope.respJsonAry = resp.data;
-                }
 
-                function errors(resp) {
-                    alert(resp.data);
-                }
-            }
-        })
+                    // Initialize DataTables after data has been fetched
+                    $timeout(function () {
+                        $('#myTable').DataTable({
+                            dom: "lfBrtip",
+                            lengthMenu: [[25, 50, -1], [25, 50, "All"]],
+                            language: {
+                                emptyTable: 'No items matched your search criteria'
+                            },
+                            buttons: [
+                                {
+                                    text: 'Export',
+                                    className: 'btn btn-primary',
+                                    extend: 'csv'
+                                }
+                            ]
+                        });
+                    }, 0);
+                }, function error() {
+                    alert("Error fetching data");
+                });
+            };
+        });
     </script>
+
+<script>//email passing
+    $(document).ready(function () {
+
+        let user = localStorage.getItem("user");
+        
+        if(user==null){
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
+    })
+</script>
     <style>
     body {
         font-family: 'Roboto Slab', sans-serif;
@@ -148,10 +179,9 @@
         </center>
     </div>
 
-    <center>
         <div class="container">
     <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table table-hover" id="myTable">
             <thead>
                 <tr>
                     <th scope="col" style="background-color: #004aad; color: white;">#</th>
@@ -195,6 +225,14 @@
         </table>
     </div>
 </div>
-</center>
+
+ <!-- DataTable Scripts -->
+ <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+ <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+ <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+ <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+ <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
 </body>
 </html>

@@ -29,14 +29,16 @@
     <!-- Font Awesome Icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 
-    <!-- <script>//email passing
+    <script>//email passing
         $(document).ready(function () {
 
             let user = localStorage.getItem("user");
-             //alert(user);
-            //$("#txtEmail").val(user);
+            if(user==null){
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
         })
-    </script> -->
+    </script>
 
     <script> //angular email task fetch call 
         var module = angular.module("myModule", []);
@@ -256,7 +258,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/consumer-contactUs.html">Contact Us</a>
+                        <a class="nav-link" href="/customer-contactUs.html">Contact Us</a>
                     </li>
                 </ul>
             </div>

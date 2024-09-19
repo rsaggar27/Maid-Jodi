@@ -66,6 +66,18 @@
             }
         })
     </script>
+
+<script>//email passing
+    $(document).ready(function () {
+
+        let user = localStorage.getItem("user");
+        
+        if(user==null){
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
+    })
+</script>
     <style>
         body {
             font-family: 'Roboto Slab', sans-serif;
@@ -196,7 +208,7 @@
                 <tr>
                     <th scope="col" style="background-color: #004aad; color: white;">#</th>
                     <th scope="col" style="background-color: #004aad; color: white;">Email Id</th>
-                    <th scope="col" style="background-color: #004aad; color: white;">PassWord</th>
+                    <!-- <th scope="col" style="background-color: #004aad; color: white;">PassWord</th> -->
                     <th scope="col" style="background-color: #004aad; color: white;">User-Type</th>
                     <th scope="col" style="background-color: #004aad; color: white;">Date of SignUp</th>
                     <th scope="col" style="background-color: #004aad; color: white;">User Status</th>
@@ -207,7 +219,7 @@
                 <tr ng-repeat="obj in respJsonAry">
                     <th>{{$index+1}}</th>
                     <td>{{obj.emailId}}</td>
-                    <td>{{obj.pwd}}</td>
+                    <!-- <td>{{obj.pwd}}</td> -->
                     <td>{{obj.userType}}</td>
                     <td>{{obj.dos}}</td>
                     <td>{{obj.userStatus}}</td>

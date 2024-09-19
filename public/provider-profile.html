@@ -39,6 +39,11 @@
     $(document).ready(function () {
 
         let user = localStorage.getItem("user");
+
+        if(user==null){
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
         //alert(user);
         $("#txtEmail").val(user);
     })
@@ -234,7 +239,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <label for="" class="form-floating">Email ID</label>
-                    <input type="email" class="form-control" disabled id="txtEmail" name="txtEmail"
+                    <input type="email" class="form-control" readonly id="txtEmail" name="txtEmail"
                         value="">
                 </div>
             </div>

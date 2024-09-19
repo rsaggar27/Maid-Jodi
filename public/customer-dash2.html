@@ -219,8 +219,18 @@
 
     <script>
         //user info and logout
+        let user = localStorage.getItem("user");
+
+        if (user == null) {
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
         $(document).ready(function () {
             let user = localStorage.getItem("user");
+            if(user==null){
+                alert("Please Login !!");
+                location.href = "/index.html";
+            }
             $("#active").html(user);
             $("#emailBox").val(user);
             $("#txtEmail").val(user);

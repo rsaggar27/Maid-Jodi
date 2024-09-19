@@ -172,6 +172,18 @@
         });
     </script>
 
+<script>//email passing
+    $(document).ready(function () {
+
+        let user = localStorage.getItem("user");
+        
+        if(user==null){
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
+    })
+</script>
+
     <style>
         body {
             font-family: 'Roboto Slab', sans-serif;
@@ -276,6 +288,8 @@
         }
     </style>
     <link rel="icon" type="png" href="/assets/projectLogo2.png">
+
+
 </head>
 
 <body ng-app="myModule" ng-controller="myController" ng-init="doFetchDistinctCities();doFetchUsers()">

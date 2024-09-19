@@ -29,14 +29,37 @@
 
     <!-- Font Awesome Icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
-    
-    <script>
-        var module = angular.module("myModule", []);
-        var controller = module.controller("myController", function ($scope, $http) {
 
-        })
+    <script>
+
+
+        let user = localStorage.getItem("user");
+
+        if (user == null) {
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
+
+
+        //user info and logout
+        $(document).ready(function () {
+            let user = localStorage.getItem("user");
+
+
+
+            $("#active").html(user);
+            $("#emailBox").val(user);
+            $("#txtEmail").val(user);
+
+
+
+            $("#btnLogout").click(function () {
+                localStorage.removeItem("user");
+                location.href = "/index.html";
+            });
+        });
     </script>
-<link rel="icon" type="png" href="/assets/projectLogo2.png">
+    <link rel="icon" type="png" href="/assets/projectLogo2.png">
     <style>
         body {
             font-family: 'Roboto Slab', sans-serif;
@@ -72,12 +95,12 @@
         }
 
         .card h2 {
-            color:  #0056b3;
+            color: #0056b3;
         }
 
         .card i {
             font-size: 2em;
-            color:  #0056b3;
+            color: #0056b3;
         }
 
         .nav-item {
@@ -134,11 +157,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/user-manager.html">User Manager</a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a class="nav-link" href="/admin-provider.html">Work-Providers</a>
                     </li>
-                   
+
                     <li class="nav-item">
                         <a class="nav-link" href="/admin-customer.html">Customers</a>
                     </li>
@@ -146,7 +169,7 @@
                         <a class="nav-link" href="/admin-feedback.html">Feedbacks</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="window.location='/index.html'">Logout</a>
+                        <a class="nav-link" id="btnLogout">Logout</a>
                     </li>
                 </ul>
             </div>

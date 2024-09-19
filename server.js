@@ -4,6 +4,7 @@ const fileuploader = require("express-fileupload");
 const mysql2 = require("mysql2");
 const nodemailer = require("nodemailer");
 const mailgen = require("mailgen");
+var md5 = require('md5');
 
 app.listen(2707, function () {
   console.log("Server Started at 2707 :)");
@@ -56,7 +57,7 @@ app.get("/sign_up", function (req, resp) {
 
         mysql.query(
           "insert into users values(?,?,?,current_date,1)",
-          [emailId, pwd, uType],
+          [emailId, md5(pwd), uType],
           function (err) {
             if (err == null) {
               if (uType == "Customer") {
@@ -94,7 +95,7 @@ app.get("/login", function (req, resp) {
   //login query
   mysql.query(
     "select * from users where emailId=? and pwd=?",
-    [req.query.loginEmail, req.query.loginPwd],
+    [req.query.loginEmail, md5(req.query.loginPwd)],
     function (err, resultJsonAry) {
       //console.log(JSON.stringify(resultJsonAry));
 
@@ -191,13 +192,17 @@ app.post("/profile-update", function (req, resp) {
   const address = req.body.txtAdd;
   const city = req.body.selCity;
   const state = req.body.selState;
-  const hdnImg = req.body.hdnImg;
+  let hdnImg = req.body.hdnImg;
+  console.log(req.body.txtEmail);
   //pic-uploading
 
   let filename;
   if (req.files == null) {
-    // filename = "nopic.jpg";
-    filename = hdnImg; //for handling that ki agr image update nahi huyi toh vahi image rahe jo pehle thi
+    console.log(hdnImg);
+    if(hdnImg=='')
+      hdnImg = "nopic.jpg";
+
+      filename = hdnImg; //for handling that ki agr image update nahi huyi toh vahi image rahe jo pehle thi
   } else {
     filename = req.files.ppic.name;
     let path = process.cwd() + "/public/uploads/" + filename;
@@ -210,11 +215,13 @@ app.post("/profile-update", function (req, resp) {
     [name, cnumber, address, city, state, filename, email],
     function (err, respJson) {
       if (err == null) {
-        console.log(respJson);
+        // console.log(respJson);
         let filepath = process.cwd() + "/public/customer-profile.html";
+        // console.log(filepath);
         resp.sendFile(filepath);
         // location.href = '/customer-dash2.html';
       } else {
+        console.log(err.message);
         resp.send(err.message);
       }
     }
@@ -229,11 +236,11 @@ app.get("/fetch-one", function (req, resp) {
     function (err, resultJsonAry) {
       if (err != null) {
         alert("Invalid Infomation");
-        // console.log(err);
+        console.log(err);
         resp.send(err);
         return;
       }
-      // console.log(resultJsonAry);
+      console.log(resultJsonAry);
       resp.send(resultJsonAry);
     }
   );
@@ -244,7 +251,7 @@ app.get("/pwd-change", function (req, resp) {
   console.log(req.query);
   mysql.query(
     "select * from users where emailId=? and pwd=?",
-    [req.query.bssEmail, req.query.kuchOldPwd],
+    [req.query.bssEmail, md5(req.query.kuchOldPwd)],
     function (err, respJsonAry) {
       console.log(respJsonAry);
 
@@ -257,7 +264,7 @@ app.get("/pwd-change", function (req, resp) {
       if (respJsonAry.length >= 1) {
         mysql.query(
           "update users set pwd=? where emailId=?",
-          [req.query.kuchNewPwd, req.query.bssEmail],
+          [md5(req.query.kuchNewPwd), req.query.bssEmail],
           function (err) {
             if (err != null) {
               console.log(err);
@@ -649,8 +656,25 @@ app.get("/forgetPassword", function (req, resp) {
       console.log(respJsonAry[0]);
       if (respJsonAry.length == 1) {
         console.log(respJsonAry[0]);
-        const Password = respJsonAry[0].pwd;
+        
+        let pass = '';
+        let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+            'abcdefghijklmnopqrstuvwxyz0123456789@#$';
+    
+        for (let i = 1; i <= 8; i++) {
+            let char = Math.floor(Math.random()
+                * str.length + 1);
+    
+            pass += str.charAt(char)
+        }
+        
+        const Password = pass;
         const UserName = respJsonAry[0].emailId;
+
+        mysql.query("update users set pwd=? where emailId=?",[md5(Password),UserName],function(err){
+          if(err!=null)
+          resp.send(err.message);
+        })
 
         console.log("Username:" + UserName);
 
@@ -659,8 +683,8 @@ app.get("/forgetPassword", function (req, resp) {
           secure: true,
           port: 465,
           auth: {
-            user: "maidjodi1@gmail.com",
-            pass: "ztae ozbe qgwr lhhz",
+            user: "rishabhsaggar927@gmail.com",
+            pass: "ndgl zouy eufz uzhs",
           },
         };
 

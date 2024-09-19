@@ -216,8 +216,19 @@
     </style>
 
     <script>//user info and logout
+        let user = localStorage.getItem("user");
+
+        if (user == null) {
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
         $(document).ready(function () {
             let user = localStorage.getItem("user");
+
+            if (user == null) {
+                alert("Please Login !")
+                location.href = "/index.html";
+            }
             $("#active").html(user);
             $("#emailBox").val(user);
             $("#txtEmail").val(user);
@@ -230,8 +241,8 @@
     </script>
 
     <script>//post-task
-       //post-task
-       $(document).ready(function () {
+        //post-task
+        $(document).ready(function () {
             $("#btnPostTask").click(function () {
                 let obj = {
                     url: "/post-task",
@@ -246,10 +257,10 @@
                     },
                 };
                 //date formatting for comapring ki date sahi se valid ho taaki error na aaye   
-                var dtToday=new Date();
+                var dtToday = new Date();
                 // var dtToday=v.getFullYear()+"-"+(parseInt(v.getMonth())+1)+"-"+ v.getDate();
                 // console.log(dtToday)
-                var dt=new Date($("#dtUpto").val());
+                var dt = new Date($("#dtUpto").val());
                 // console.log(dt);
 
                 if (Date.parse(dt) >= Date.parse(dtToday)) {
@@ -382,9 +393,10 @@
     </nav>
     <center>
         <div class="mt-2">
-        <span style="font-size: medium; color: #0056b3;"> Welcome to dashboard ~<span id="active"
-                style="color: #0367d1;"></span></span>
-            </div></center>
+            <span style="font-size: medium; color: #0056b3;"> Welcome to dashboard ~<span id="active"
+                    style="color: #0367d1;"></span></span>
+        </div>
+    </center>
     <div class="dashboard">
         <div class="row">
             <!-- Profile Card -->

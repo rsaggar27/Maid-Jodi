@@ -24,7 +24,7 @@ alter table providers modify state varchar(50);
 alter table providers modify emailid varchar(100) primary key;
 alter table providers modify since date;
 alter table customer_info modify state varchar(50);
-reate table feedbacks(email varchar(200) ,cname varchar(100) ,cnumber varchar(20) ,feedback varchar(1000));
+create table feedbacks(email varchar(200) ,cname varchar(100) ,cnumber varchar(20) ,feedback varchar(1000));
 
 select * from feedbacks;
 

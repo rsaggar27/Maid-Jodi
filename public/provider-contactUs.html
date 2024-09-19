@@ -172,6 +172,11 @@
         $(document).ready(function () {
 
             let user = localStorage.getItem("user");
+
+            if(user==null){
+            alert("Please Login !")
+            location.href = "/index.html";
+        }
             //alert(user);
             $("#txtEmail").val(user);
         })
